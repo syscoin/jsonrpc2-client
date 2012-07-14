@@ -1,0 +1,82 @@
+<project name="JsonRpc2-Client" default="dist" basedir=".">
+
+	<property name="version" value="1.7.1"/>
+	<property name="jarfile" value="jsonrpc2-client-${version}.jar"/>
+	
+	<path id="classpath.compile">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="classpath.runtime">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+		<pathelement location="build"/>
+	</path>
+	
+	<target name="clean">
+		<delete dir="build"/>
+		<delete dir="javadoc"/>
+		<delete file="${jarfile}"/>
+		<delete>
+			<fileset dir="." includes="**/TEST-*"/>
+		</delete>
+	</target>
+	
+	<target name="compile">
+		<mkdir dir="build"/>
+		<javac srcdir="src" 
+		       destdir="build" 
+		       classpathref="classpath.compile"
+		       includeantruntime="false"/>
+	</target>
+	
+	<target name="compile-tests" depends="compile">
+		<mkdir dir="build"/>
+		<javac srcdir="test" 
+		       destdir="build" 
+		       classpathref="classpath.compile"
+		       includeantruntime="false" />
+	</target>
+	
+	<target name="junit" depends="compile,compile-tests">
+		<junit showoutput="true">
+			<classpath refid="classpath.runtime"/>
+			<formatter type="plain"/>
+			<test name="com.thetransactioncompany.jsonrpc2.client.Test"/>
+			<test name="com.thetransactioncompany.jsonrpc2.client.OptionsTest"/>
+			<test name="com.thetransactioncompany.jsonrpc2.client.CookieTest"/>
+		</junit>
+	</target>
+	
+	<target name="javadoc">
+		<mkdir dir="javadoc"/>
+		<javadoc packagenames="com.thetransactioncompany.jsonrpc2.client*"
+	        	 sourcepath="src"
+			 classpathref="classpath.compile"
+			 destdir="javadoc"
+			 author="true"
+			 version="true"
+			 use="false"
+			 linksource="true"
+			 windowtitle="JSON-RPC 2.0 Client"
+			 doctitle="JSON-RPC 2.0 Client">
+			<bottom><![CDATA[<i>Copyright &#169; 2010 - 2012 Vladimir Dzhuvinov. All Rights Reserved.</i>]]></bottom>
+		</javadoc>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<jar destfile="${jarfile}" basedir="build" excludes="**/*Test*.class"/>
+	</target>
+		     
+	
+	<target name="dist" depends="clean,compile,compile-tests,junit,javadoc,jar">
+		<delete dir="build"/>
+		<delete>
+			<fileset dir="." includes="**/TEST-*"/>
+		</delete>
+	</target>
+
+</project>
