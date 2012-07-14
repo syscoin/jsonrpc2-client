@@ -12,7 +12,7 @@ import com.thetransactioncompany.jsonrpc2.util.*;
  * Test JSON-RPC 2.0 server with cookies.
  *
  * @author Vladimir Dzhuvinov
- * @version 1.7.1 (2011-08-23)
+ * @version $version$ (2011-08-23)
  */
 public class CookieTestServer extends NanoHTTPD {
 	

@@ -34,7 +34,7 @@ import com.thetransactioncompany.jsonrpc2.*;
  *
  * @since 1.4
  * @author Vladimir Dzhuvinov
- * @version 1.7.1 (2011-08-23)
+ * @version $version$ (2011-08-23)
  */
 public class JSONRPC2SessionOptions {
 	

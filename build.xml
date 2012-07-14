@@ -1,6 +1,7 @@
-<project name="JsonRpc2-Client" default="dist" basedir=".">
+<project name="JSON-RPC 2.0 Client" default="dist" basedir=".">
 
-	<property name="version" value="1.7.1"/>
+	<property name="version" value="1.7.2"/>
+	<property name="version-date" value="2012-07-14"/>
 	<property name="jarfile" value="jsonrpc2-client-${version}.jar"/>
 	
 	<path id="classpath.compile">
@@ -17,20 +18,40 @@
 	</path>
 	
 	<target name="clean">
+		<delete dir="procsrc"/>
 		<delete dir="build"/>
 		<delete dir="javadoc"/>
 		<delete file="${jarfile}"/>
+		<delete file="JsonRpc2-Client.zip"/>
 		<delete>
 			<fileset dir="." includes="**/TEST-*"/>
 		</delete>
 	</target>
 	
-	<target name="compile">
+	<target name="src">
+		<mkdir dir="procsrc"/>
+		<copy todir="procsrc">
+    			<fileset dir="src"/>
+  		</copy>
+		
+		<!-- Indicate version number and version date -->
+		<replace dir="procsrc" token="$version$" value="${version}">
+			<include name="**/*.java"/>
+		</replace>
+		<replace dir="procsrc" token="$version-date$" value="${version-date}">
+			<include name="**/*.java"/>
+		</replace>
+	</target>
+	
+	<target name="compile" depends="src">
 		<mkdir dir="build"/>
 		<javac srcdir="src" 
 		       destdir="build" 
 		       classpathref="classpath.compile"
-		       includeantruntime="false"/>
+		       includeantruntime="false">
+		       
+			<compilerarg value="-Xlint:unchecked"/>
+		</javac>
 	</target>
 	
 	<target name="compile-tests" depends="compile">
@@ -51,10 +72,10 @@
 		</junit>
 	</target>
 	
-	<target name="javadoc">
+	<target name="javadoc" depends="src">
 		<mkdir dir="javadoc"/>
 		<javadoc packagenames="com.thetransactioncompany.jsonrpc2.client*"
-	        	 sourcepath="src"
+	        	 sourcepath="procsrc"
 			 classpathref="classpath.compile"
 			 destdir="javadoc"
 			 author="true"
@@ -63,7 +84,6 @@
 			 linksource="true"
 			 windowtitle="JSON-RPC 2.0 Client"
 			 doctitle="JSON-RPC 2.0 Client">
-			<bottom><![CDATA[<i>Copyright &#169; 2010 - 2012 Vladimir Dzhuvinov. All Rights Reserved.</i>]]></bottom>
 		</javadoc>
 	</target>
 	
@@ -73,10 +93,14 @@
 		     
 	
 	<target name="dist" depends="clean,compile,compile-tests,junit,javadoc,jar">
+		<delete dir="procsrc"/>
 		<delete dir="build"/>
 		<delete>
 			<fileset dir="." includes="**/TEST-*"/>
 		</delete>
+		<zip destfile="JsonRpc2-Client.zip">
+			<zipfileset dir="." prefix="JsonRpc2-Client-${version}"/>
+		</zip>
 	</target>
 
 </project>

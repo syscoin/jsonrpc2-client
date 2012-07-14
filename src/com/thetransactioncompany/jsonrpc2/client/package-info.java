@@ -7,6 +7,6 @@
  * to represent, serialise and parse JSON-RPC 2.0 messages.
  *
  * @author Vladimir Dzhuvinov
- * @version 1.7.1 (2012-02-16)
+ * @version $version$ ($version-date$)
  */
 package com.thetransactioncompany.jsonrpc2.client;

@@ -13,7 +13,7 @@ import junit.framework.*;
  * Tests the JSONRPC2SessionOptions class.
  *
  * @author Vladimir Dzhuvinov
- * @version 1.7.1 (2011-07-13)
+ * @version $version$ (2011-07-13)
  */
 public class OptionsTest extends TestCase {
 

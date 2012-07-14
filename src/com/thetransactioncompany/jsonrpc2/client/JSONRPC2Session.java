@@ -87,7 +87,7 @@ import com.thetransactioncompany.jsonrpc2.*;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
- * @version 1.7.1 (2011-08-23)
+ * @version $version$ (2011-08-23)
  */
 public class JSONRPC2Session {
 
@@ -136,6 +136,7 @@ public class JSONRPC2Session {
 	 * instance.
 	 *
 	 * @param url The server URL, e.g. "http://jsonrpc.example.com:8080".
+	 *            Must not be {@code null}.
 	 */
 	public JSONRPC2Session (final URL url) {
 
@@ -186,7 +187,7 @@ public class JSONRPC2Session {
 	/**
 	 * Sets the JSON-RPC 2.0 server URL.
 	 *
-	 * @param url The server URL.
+	 * @param url The server URL. Must not be {@code null}.
 	 */
 	public void setURL(final URL url) {
 
@@ -388,7 +389,8 @@ public class JSONRPC2Session {
 	 * Sends a JSON-RPC 2.0 request using HTTP POST and returns the server
 	 * response.
 	 *
-	 * @param request The JSON-RPC 2.0 request to send.
+	 * @param request The JSON-RPC 2.0 request to send. Must not be 
+	 *                {@code null}.
 	 *
 	 * @return The JSON-RPC 2.0 response returned by the server.
 	 *
@@ -403,7 +405,6 @@ public class JSONRPC2Session {
 		URLConnection con = null;
 
 		try {
-
 			con = url.openConnection();
 
 		} catch (IOException e) {
@@ -530,7 +531,8 @@ public class JSONRPC2Session {
 	 * Sends a JSON-RPC 2.0 notification using HTTP POST. Note that 
 	 * contrary to requests, notifications produce no server response.
 	 *
-	 * @param notification The JSON-RPC 2.0 notification to send.
+	 * @param notification The JSON-RPC 2.0 notification to send. Must not
+	 *                     be {@code null}.
 	 *
 	 * @throws JSONRPC2SessionException On a network error.
 	 */

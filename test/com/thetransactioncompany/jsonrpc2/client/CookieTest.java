@@ -15,7 +15,7 @@ import junit.framework.*;
  * Tests the cookie management.
  *
  * @author Vladimir Dzhuvinov
- * @version 1.7.1 (2011-08-23)
+ * @version $version$ (2011-08-23)
  */
 public class CookieTest extends TestCase {
 	
