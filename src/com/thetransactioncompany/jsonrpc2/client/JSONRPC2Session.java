@@ -214,7 +214,7 @@ public class JSONRPC2Session {
 	public void setOptions(final JSONRPC2SessionOptions options) {
 
 		if (options == null)
-			throw new NullPointerException("Client session options must not be null");
+			throw new IllegalArgumentException("Client session options must not be null");
 
 		this.options = options;
 	}
@@ -349,7 +349,7 @@ public class JSONRPC2Session {
 	private void storeCookies(final Map <String,List<String>> headers) {
 		
 		if (headers == null)
-			throw new NullPointerException("The HTTP headers must not be null");
+			throw new IllegalArgumentException("The HTTP headers must not be null");
 		
 		Iterator <Map.Entry<String,List<String>>> it = headers.entrySet().iterator();
 		

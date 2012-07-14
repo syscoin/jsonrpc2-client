@@ -17,7 +17,7 @@ public interface RawResponseInspector {
 	 * Allows for inspection of the specified raw HTTP response to a JSON-RPC
 	 * 2.0 request or nofitication.
 	 *
-	 * @param rawResponse The raw HTTP response.
+	 * @param rawResponse The raw HTTP response. Must not be {@code null}.
 	 */
 	public void inspect(final RawResponse rawResponse);
 

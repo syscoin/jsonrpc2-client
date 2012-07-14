@@ -77,7 +77,7 @@ public class RawResponse {
 		throws IOException {
 
 		if (connection == null)
-			throw new NullPointerException("The URL connection must not be null");
+			throw new IllegalArgumentException("The URL connection must not be null");
 
 		RawResponse response = new RawResponse();
 
