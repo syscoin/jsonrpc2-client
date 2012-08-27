@@ -87,7 +87,7 @@ import com.thetransactioncompany.jsonrpc2.*;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-08-23)
+ * @version $version$ (2012-08-27)
  */
 public class JSONRPC2Session {
 
@@ -138,22 +138,38 @@ public class JSONRPC2Session {
 	 * @param url The server URL, e.g. "http://jsonrpc.example.com:8080".
 	 *            Must not be {@code null}.
 	 */
-	public JSONRPC2Session (final URL url) {
+	public JSONRPC2Session(final URL url) {
 
-		if (! url.getProtocol().equals("http") && ! url.getProtocol().equals("https"))	
+		if (! url.getProtocol().equalsIgnoreCase("http") && 
+		    ! url.getProtocol().equalsIgnoreCase("https")   )
 			throw new IllegalArgumentException("The URL protocol must be HTTP or HTTPS");
 
 		this.url = url;
 
 
 		// Initialise the trust-all-certs SSL socket factory
+		initTrustAllSocketFactory();
 
+		// Default session options
+		options = new JSONRPC2SessionOptions();
+
+		// Null connection configurator
+		connectionConfigurator = null;
+	}
+	
+	
+	/**
+	 * Initialises the trust-all-certificates SSL socket factory.
+	 */
+	public void initTrustAllSocketFactory() {
+	
 		TrustManager[] trustAllCerts = new TrustManager[] {
-				new X509TrustManager() {
-					public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[]{}; }
-					public void checkClientTrusted(X509Certificate[] certs, String authType) { }
-					public void checkServerTrusted(X509Certificate[] certs, String authType) { }
-				}
+			
+			new X509TrustManager() {
+				public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[]{}; }
+				public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+				public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+			}
 		};
 
 		try {
@@ -164,12 +180,6 @@ public class JSONRPC2Session {
 		} catch (Exception e) {
 			// ignore
 		}
-
-		// Default session options
-		options = new JSONRPC2SessionOptions();
-
-		// Null connection configurator
-		connectionConfigurator = null;
 	}
 
 
@@ -191,6 +201,9 @@ public class JSONRPC2Session {
 	 */
 	public void setURL(final URL url) {
 
+		if (url == null)
+			throw new IllegalArgumentException("The server URL must not be null");
+		
 		this.url = url;
 	}
 
@@ -214,7 +227,7 @@ public class JSONRPC2Session {
 	public void setOptions(final JSONRPC2SessionOptions options) {
 
 		if (options == null)
-			throw new IllegalArgumentException("Client session options must not be null");
+			throw new IllegalArgumentException("The client session options must not be null");
 
 		this.options = options;
 	}
@@ -341,10 +354,10 @@ public class JSONRPC2Session {
 	
 	
 	/**
-	 * Stores the cookies found the specified HTTP headers.
+	 * Stores the cookies found the specified HTTP "Set-Cookie" headers.
 	 * 
-	 * @param The HTTP headers to examine for "Set-Cookie" headers. Must not be
-	 *        {@code null}.
+	 * @param The HTTP headers to examine for "Set-Cookie" headers. Must not
+	 *        be {@code null}.
 	 */
 	private void storeCookies(final Map <String,List<String>> headers) {
 		
@@ -373,7 +386,6 @@ public class JSONRPC2Session {
 					continue; // skip
 				
 				try {
-					
 					cookies.addAll(HttpCookie.parse(cookieField));
 					
 				} catch (IllegalArgumentException e) {
@@ -410,10 +422,13 @@ public class JSONRPC2Session {
 		} catch (IOException e) {
 
 			throw new JSONRPC2SessionException(
-					"Network exception", 
+					"Network exception: " + e.getMessage(),
 					JSONRPC2SessionException.NETWORK_EXCEPTION,
 					e);
 		}
+		
+		con.setConnectTimeout(options.getConnectTimeout());
+		con.setReadTimeout(options.getReadTimeout());
 
 		applyHeaders(con);
 
@@ -438,7 +453,7 @@ public class JSONRPC2Session {
 		} catch (IOException e) {
 
 			throw new JSONRPC2SessionException(
-					"Network exception",
+					"Network exception: " + e.getMessage(),
 					JSONRPC2SessionException.NETWORK_EXCEPTION,
 					e);
 		}
@@ -454,7 +469,7 @@ public class JSONRPC2Session {
 		} catch (IOException e) {
 
 			throw new JSONRPC2SessionException(
-					"Network exception",
+					"Network exception: " + e.getMessage(),
 					JSONRPC2SessionException.NETWORK_EXCEPTION,
 					e);
 		}
@@ -548,10 +563,13 @@ public class JSONRPC2Session {
 		} catch (IOException e) {
 
 			throw new JSONRPC2SessionException(
-					"Network exception", 
+					"Network exception: " + e.getMessage(),
 					JSONRPC2SessionException.NETWORK_EXCEPTION,
 					e);
 		}
+		
+		con.setConnectTimeout(options.getConnectTimeout());
+		con.setReadTimeout(options.getReadTimeout());
 
 		applyHeaders(con);
 
@@ -578,7 +596,7 @@ public class JSONRPC2Session {
 		} catch (IOException e) {
 
 			throw new JSONRPC2SessionException(
-					"Network exception",
+					"Network exception: " + e.getMessage(),
 					JSONRPC2SessionException.NETWORK_EXCEPTION,
 					e);
 		}
@@ -595,7 +613,7 @@ public class JSONRPC2Session {
 		} catch (IOException e) {
 
 			throw new JSONRPC2SessionException(
-					"Network exception",
+					"Network exception: " + e.getMessage(),
 					JSONRPC2SessionException.NETWORK_EXCEPTION,
 					e);
 		}

@@ -13,7 +13,7 @@ import junit.framework.*;
  * Tests the JSONRPC2Session class.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-08-24)
+ * @version $version$ (2012-08-27)
  */
 public class Test extends TestCase {
 
@@ -107,7 +107,7 @@ public class Test extends TestCase {
 		}
 
 		JSONRPC2Session session = new JSONRPC2Session(url);
-
+		session.getOptions().setConnectTimeout(1000); // 1 second
 
 		JSONRPC2Response response = null;
 
@@ -118,7 +118,7 @@ public class Test extends TestCase {
 		} catch (JSONRPC2SessionException e) {
 			// ok
 			assertEquals(JSONRPC2SessionException.NETWORK_EXCEPTION, e.getCauseType());
-			System.out.println(e.getMessage() + ": " + e.getCause().getMessage() + " [" + e.getCause().getClass().getName() + "]");
+			System.out.println(e.getMessage() + " [" + e.getCause().getClass().getName() + "]");
 		}
 	}
 
@@ -139,7 +139,7 @@ public class Test extends TestCase {
 		}
 
 		JSONRPC2Session session = new JSONRPC2Session(url);
-
+		session.getOptions().setConnectTimeout(1000); // 1 second
 
 		JSONRPC2Response response = null;
 
@@ -150,7 +150,7 @@ public class Test extends TestCase {
 		} catch (JSONRPC2SessionException e) {
 			// ok
 			assertEquals(JSONRPC2SessionException.NETWORK_EXCEPTION, e.getCauseType());
-			System.out.println(e.getMessage() + ": " + e.getCause().getMessage() + " [" + e.getCause().getClass().getName() + "]");
+			System.out.println(e.getMessage() + " [" + e.getCause().getClass().getName() + "]");
 		}
 	}
 
@@ -172,7 +172,7 @@ public class Test extends TestCase {
 		}
 
 		JSONRPC2Session session = new JSONRPC2Session(url);
-
+		session.getOptions().setConnectTimeout(1000); // 1 second
 
 		JSONRPC2Response response = null;
 
@@ -183,7 +183,7 @@ public class Test extends TestCase {
 		} catch (JSONRPC2SessionException e) {
 			// ok
 			assertEquals(JSONRPC2SessionException.NETWORK_EXCEPTION, e.getCauseType());
-			System.out.println(e.getMessage() + ": " + e.getCause().getMessage() + " [" + e.getCause().getClass().getName() + "]");
+			System.out.println(e.getMessage() + " [" + e.getCause().getClass().getName() + "]");
 		}
 	}
 
@@ -215,7 +215,7 @@ public class Test extends TestCase {
 
 		} catch (JSONRPC2SessionException e) {
 			// ok
-			System.out.println(e.getMessage() + ": " + e.getCause().getMessage() + " [" + e.getCause().getClass().getName() + "]");
+			System.out.println(e.getMessage() + " [" + e.getCause().getClass().getName() + "]");
 
 			assertEquals(JSONRPC2SessionException.NETWORK_EXCEPTION, e.getCauseType());
 		}

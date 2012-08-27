@@ -28,13 +28,15 @@ import com.thetransactioncompany.jsonrpc2.*;
  *     <li>Ignore version 2.0 checks when parsing responses to allow client 
  *         sessions to older JSON-RPC (1.0) servers.</li>
  *     <li>Parse non-standard attributes in JSON-RPC 2.0 responses.
+ *     <li>Set an HTTP connect timeout.
+ *     <li>Set an HTTP read timeout.
  *     <li>Trust all X.509 server certificates (for HTTPS connections), 
  *         including self-signed.</li>
  * </ul>
  *
  * @since 1.4
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-08-23)
+ * @version $version$ (2012-08-27)
  */
 public class JSONRPC2SessionOptions {
 	
@@ -135,6 +137,32 @@ public class JSONRPC2SessionOptions {
 	
 	
 	/**
+	 * The HTTP connect timeout, in milliseconds. Zero implies the option is
+	 * disabled (timeout of infinity).
+	 */
+	private int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
+	
+	
+	/**
+	 * The default HTTP connect timeout. Set to zero (disabled).
+	 */
+	public static final int DEFAULT_CONNECT_TIMEOUT = 0;
+	
+	
+	/**
+	 * The HTTP read timeout, in milliseconds. Zero implies the option is
+	 * disabled (timeout of infinity).
+	 */
+	private int readTimeout = DEFAULT_READ_TIMEOUT;
+	
+	
+	/**
+	 * The default HTTP read timeout. Set to zero (disabled).
+	 */
+	public static final int DEFAULT_READ_TIMEOUT = 0;
+	
+	
+	/**
 	 * If {@code true} self-signed certificates presented by the JSON-RPC 
 	 * 2.0 server must be accepted.
 	 */
@@ -171,6 +199,12 @@ public class JSONRPC2SessionOptions {
 	 *
 	 * <p>Strict 2.0 version checking will be performed. To ignore the
 	 * JSON-RPC version attribute use {@link #ignoreVersion(boolean)}.
+	 *
+	 * <p>HTTP connect timeouts will be disabled. To specify a value use
+	 * {@link #setConnectTimeout}.
+	 *
+	 * <p>HTTP read timeouts will be disabled. To specify a value use
+	 * {@link #setReadTimeout}.
 	 *
 	 * <p>Self-signed X.509 certificates presented by the JSON-RPC 2.0
 	 * server will not be accepted. To relax certificate cheking use
@@ -424,6 +458,68 @@ public class JSONRPC2SessionOptions {
 	
 	
 	/**
+	 * Sets the HTTP connect timeout.
+	 *
+	 * @since 1.8
+	 *
+	 * @param timeout The HTTP connect timeout, in milliseconds. Zero
+	 *                implies the option is disabled (timeout of infinity).
+	 */
+	public void setConnectTimeout(final int timeout) {
+	
+		if (timeout < 0)
+			throw new IllegalArgumentException("The HTTP connect timeout must be zero or positive");
+		
+		connectTimeout = timeout;
+	}
+	
+	
+	/**
+	 * Gets the HTTP connect timeout.
+	 *
+	 * @since 1.8
+	 *
+	 * @return The HTTP connect timeout, in milliseconds. Zero implies the
+	 *         option is disabled (timeout of infinity).
+	 */
+	public int getConnectTimeout() {
+	
+		return connectTimeout;
+	}
+	
+	
+	/**
+	 * Sets the HTTP read timeout.
+	 *
+	 * @since 1.8
+	 *
+	 * @param timeout The HTTP read timeout, in milliseconds. Zero implies
+	 *                the option is disabled (timeout of infinity).
+	 */
+	public void setReadTimeout(final int timeout) {
+	
+		if (timeout < 0)
+			throw new IllegalArgumentException("The HTTP read timeout must be zero or positive");
+		
+		readTimeout = timeout;
+	}
+	
+	
+	/**
+	 * Gets the HTTP read timeout.
+	 *
+	 * @since 1.8
+	 *
+	 * @return The HTTP read timeout, in milliseconds. Zero implies the 
+	 *         option is disabled (timeout of infinity).
+	 */
+	public int getReadTimeout() {
+	
+		return readTimeout;
+	}
+	
+	
+	/**
 	 * Controls checking of X.509 certificates presented by the server when
 	 * establishing a secure HTTPS connection. The default behaviour is to 
 	 * accept only certicates issued by a trusted certificate authority 
@@ -440,7 +536,6 @@ public class JSONRPC2SessionOptions {
 	public void trustAllCerts(final boolean trustAll) {
 	
 		this.trustAll = trustAll;
-		
 	}
 	
 	
