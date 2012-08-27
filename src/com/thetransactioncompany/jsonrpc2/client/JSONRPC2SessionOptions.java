@@ -1,9 +1,7 @@
 package com.thetransactioncompany.jsonrpc2.client;
 
 
-import java.util.regex.*;
-
-import com.thetransactioncompany.jsonrpc2.*;
+import java.util.regex.Pattern;
 
 
 /**
