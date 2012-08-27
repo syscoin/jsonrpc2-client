@@ -434,8 +434,13 @@ public class JSONRPC2Session {
 		con.setDoOutput(true);
 
 		// Set trust all certs SSL factory?
-		if (con instanceof HttpsURLConnection && options.trustsAllCerts()) 
+		if (con instanceof HttpsURLConnection && options.trustsAllCerts()) {
+		
+			if (trustAllSocketFactory == null)
+				throw new JSONRPC2SessionException("Couldn't obtain trust-all SSL socket factory");
+		
 			((HttpsURLConnection)con).setSSLSocketFactory(trustAllSocketFactory);
+		}
 
 		// Apply connection configurator?
 		if (connectionConfigurator != null)
