@@ -127,7 +127,7 @@ public class JSONRPC2Session {
 	/**
 	 * Trust-all-certs (including self-signed) SSL socket factory.
 	 */
-	private SSLSocketFactory trustAllSocketFactory;
+	private static SSLSocketFactory trustAllSocketFactory = createTrustAllSocketFactory();
 
 
 	/**
@@ -146,22 +146,21 @@ public class JSONRPC2Session {
 
 		this.url = url;
 
-
-		// Initialise the trust-all-certs SSL socket factory
-		initTrustAllSocketFactory();
-
 		// Default session options
 		options = new JSONRPC2SessionOptions();
 
-		// Null connection configurator
+		// No initial connection configurator
 		connectionConfigurator = null;
 	}
 	
 	
 	/**
-	 * Initialises the trust-all-certificates SSL socket factory.
+	 * Creates a trust-all-certificates SSL socket factory. Encountered 
+	 * exceptions are not rethrown.
+	 *
+	 * @return The SSL socket factory.
 	 */
-	public void initTrustAllSocketFactory() {
+	public static SSLSocketFactory createTrustAllSocketFactory() {
 	
 		TrustManager[] trustAllCerts = new TrustManager[] {
 			
@@ -175,10 +174,12 @@ public class JSONRPC2Session {
 		try {
 			SSLContext sc = SSLContext.getInstance("SSL");
 			sc.init(null, trustAllCerts, new SecureRandom());
-			trustAllSocketFactory = sc.getSocketFactory();
+			return sc.getSocketFactory();
 
 		} catch (Exception e) {
-			// ignore
+			
+			// Ignore
+			return null;
 		}
 	}
 
