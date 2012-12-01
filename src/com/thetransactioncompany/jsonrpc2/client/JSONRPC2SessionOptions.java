@@ -14,22 +14,22 @@ import java.util.regex.Pattern;
  * <p>Overview of the available session options:
  *
  * <ul>
- *     <li>Customise the "Content-Type" header in HTTP POST requests.</li>
- *     <li>Set an "Origin" header in HTTP POST requests to simulate Cross-Origin
- *         Resource Sharing (CORS) requests from a browser.</li>
+ *     <li>Customise the "Content-Type" header in HTTP POST requests.
+ *     <li>Set an "Origin" header in HTTP POST requests to simulate 
+ *         Cross-Origin Resource Sharing (CORS) requests from a browser.
  *     <li>Accept HTTP cookies (if client sessions are established by this 
  *         mean instead of through the JSON-RPC protocol itself).
  *     <li>Customise the allowable "Content-Type" header values in HTTP POST
- *         responses.</li>
+ *         responses.
  *     <li>Preserve parse order of JSON object members in JSON-RPC 2.0 response
- *         results (for human-facing clients, e.g. the JSON-RPC 2.0 Shell).</li>
+ *         results (for human-facing clients, e.g. the JSON-RPC 2.0 Shell).
  *     <li>Ignore version 2.0 checks when parsing responses to allow client 
- *         sessions to older JSON-RPC (1.0) servers.</li>
+ *         sessions to older JSON-RPC (1.0) servers.
  *     <li>Parse non-standard attributes in JSON-RPC 2.0 responses.
  *     <li>Set an HTTP connect timeout.
  *     <li>Set an HTTP read timeout.
  *     <li>Trust all X.509 server certificates (for HTTPS connections), 
- *         including self-signed.</li>
+ *         including self-signed.
  * </ul>
  *
  * @since 1.4
@@ -47,29 +47,31 @@ public class JSONRPC2SessionOptions {
 	
 	
 	/**
-	 * The default "Content-Type" (MIME) header value of HTTP POST requests.
-	 * Set to {@code application/json}.
+	 * The default "Content-Type" (MIME) header value of HTTP POST 
+	 * requests. Set to {@code application/json}.
 	 */
 	public static final String DEFAULT_CONTENT_TYPE = "application/json";
 	
 	
 	/**
-	 * The allowed "Content-Type" (MIME) header values of HTTP responses. If
-	 * {@code null} any header value will be accepted.
+	 * The allowed "Content-Type" (MIME) header values of HTTP responses. 
+	 * If {@code null} any header value will be accepted.
 	 */
-	private String[] allowedResponseContentTypes = DEFAULT_ALLOWED_RESPONSE_CONTENT_TYPES;
+	private String[] allowedResponseContentTypes = 
+		DEFAULT_ALLOWED_RESPONSE_CONTENT_TYPES;
 	
 	
 	/**
 	 * The default allowed "Content-Type" (MIME) header values of HTTP
 	 * responses. Set to {@code application/json} and {@code text/plain}.
 	 */
-	public static final String[] DEFAULT_ALLOWED_RESPONSE_CONTENT_TYPES = {"application/json", "text/plain"};
+	public static final String[] DEFAULT_ALLOWED_RESPONSE_CONTENT_TYPES =
+		{"application/json", "text/plain"};
 	 
 	 
 	/** 
-	 * Optional CORS "Origin" header. If {@code null} the header will not be
-	 * set.
+	 * Optional CORS "Origin" header. If {@code null} the header will not 
+	 * be set.
 	 */
 	private String origin = DEFAULT_ORIGIN;
 	
@@ -96,7 +98,8 @@ public class JSONRPC2SessionOptions {
 	 * If {@code true} the order of parsed JSON object members must be
 	 * preserved.
 	 */
-	private boolean preserveObjectMemberOrder = DEFAULT_PRESERVE_OBJECT_MEMBER_ORDER;
+	private boolean preserveObjectMemberOrder = 
+		DEFAULT_PRESERVE_OBJECT_MEMBER_ORDER;
 	
 	
 	/**
@@ -135,8 +138,8 @@ public class JSONRPC2SessionOptions {
 	
 	
 	/**
-	 * The HTTP connect timeout, in milliseconds. Zero implies the option is
-	 * disabled (timeout of infinity).
+	 * The HTTP connect timeout, in milliseconds. Zero implies the option 
+	 * is disabled (timeout of infinity).
 	 */
 	private int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
 	
@@ -404,8 +407,8 @@ public class JSONRPC2SessionOptions {
 	 * JSON-RPC 2.0 responses must strictly conform to the JSON-RPC 2.0 
 	 * specification.
 	 *
-	 * @return {@code true} if the {@code "jsonrpc":"2.0"} version attribute
-	 *         is ignored, {@code false} if parsing is strict.
+	 * @return {@code true} if the {@code "jsonrpc":"2.0"} version 
+	 *         attribute is ignored, {@code false} if parsing is strict.
 	 */
 	public boolean ignoresVersion() {
 	

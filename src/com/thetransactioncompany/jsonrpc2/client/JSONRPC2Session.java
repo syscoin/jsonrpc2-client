@@ -32,8 +32,9 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
 
 /** 
- * Sends requests and / or notifications to a specified JSON-RPC 2.0 server URL.
- * The JSON-RPC 2.0 messages are dispatched by means of HTTP(S) POST.
+ * Sends requests and / or notifications to a specified JSON-RPC 2.0 server 
+ * URL. The JSON-RPC 2.0 messages are dispatched by means of HTTP(S) POST.
+ * This class is thread-safe.
  *
  * <p>The client-session class has a number of {@link JSONRPC2SessionOptions 
  * optional settings}. To change them pass a modified options instance to the
