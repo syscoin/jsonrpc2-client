@@ -1,6 +1,8 @@
 package com.thetransactioncompany.jsonrpc2.client;
 
 
+import java.net.Proxy;
+
 import java.util.regex.Pattern;
 
 
@@ -28,13 +30,14 @@ import java.util.regex.Pattern;
  *     <li>Parse non-standard attributes in JSON-RPC 2.0 responses.
  *     <li>Set an HTTP connect timeout.
  *     <li>Set an HTTP read timeout.
+ *     <li>Set an HTTP proxy.
  *     <li>Trust all X.509 server certificates (for HTTPS connections), 
  *         including self-signed.
  * </ul>
  *
  * @since 1.4
  * @author Vladimir Dzhuvinov
- * @version $version$ (2012-08-27)
+ * @version $version$ (2012-12-13)
  */
 public class JSONRPC2SessionOptions {
 	
@@ -161,6 +164,12 @@ public class JSONRPC2SessionOptions {
 	 * The default HTTP read timeout. Set to zero (disabled).
 	 */
 	public static final int DEFAULT_READ_TIMEOUT = 0;
+
+
+	/**
+	 * Optional HTTP proxy.
+	 */
+	private Proxy proxy = null;
 	
 	
 	/**
@@ -206,6 +215,8 @@ public class JSONRPC2SessionOptions {
 	 *
 	 * <p>HTTP read timeouts will be disabled. To specify a value use
 	 * {@link #setReadTimeout}.
+	 *
+	 * <p>No proxy is used. To specify one use {@link #setProxy}.
 	 *
 	 * <p>Self-signed X.509 certificates presented by the JSON-RPC 2.0
 	 * server will not be accepted. To relax certificate cheking use
@@ -517,6 +528,32 @@ public class JSONRPC2SessionOptions {
 	public int getReadTimeout() {
 	
 		return readTimeout;
+	}
+
+
+	/**
+	 * Sets an HTTP proxy.
+	 *
+	 * @since 1.10
+	 *
+	 * @param proxy The HTTP proxy to use, {@code null} if none.
+	 */
+	public void setProxy(final Proxy proxy) {
+
+		this.proxy = proxy;
+	}
+
+
+	/**
+	 * Gets the HTTP proxy.
+	 *
+	 * @since 1.10
+	 *
+	 * @return The HTTP proxy to use, {@code null} if none.
+	 */
+	public Proxy getProxy() {
+
+		return proxy;
 	}
 	
 	

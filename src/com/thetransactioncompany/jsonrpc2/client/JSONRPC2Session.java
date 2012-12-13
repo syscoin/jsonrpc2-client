@@ -107,7 +107,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2012-08-27)
+ * @version $version$ (2012-12-13)
  */
 public class JSONRPC2Session {
 
@@ -332,8 +332,7 @@ public class JSONRPC2Session {
 	public Set<HttpCookie> getCookies() {
 		
 		return cookies;
-	}
-	
+	}	
 
 
 	/**
@@ -435,7 +434,11 @@ public class JSONRPC2Session {
 		URLConnection con = null;
 
 		try {
-			con = url.openConnection();
+			// Use proxy?
+			if (options.getProxy() != null)
+				con = url.openConnection(options.getProxy());
+			else
+				con = url.openConnection();
 
 		} catch (IOException e) {
 

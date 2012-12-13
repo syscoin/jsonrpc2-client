@@ -20,6 +20,8 @@ Optional client session features:
 	  
 	* Customise the allowable "Content-Type" header values in HTTP POST 
 	  responses.
+	 
+	* Set an HTTP proxy.
 	  
 	* Preserve parse order of JSON object members in JSON-RPC 2.0 response 
 	  results (for human facing clients, e.g. the JSON-RPC 2.0 Shell).

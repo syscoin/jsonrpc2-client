@@ -4,6 +4,7 @@ package com.thetransactioncompany.jsonrpc2.client;
 import java.net.*;
 
 import com.thetransactioncompany.jsonrpc2.*;
+
 import com.thetransactioncompany.jsonrpc2.util.*;
 
 import junit.framework.*;
@@ -13,7 +14,7 @@ import junit.framework.*;
  * Tests the JSONRPC2SessionOptions class.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-07-13)
+ * @version $version$ (2012-13-13)
  */
 public class OptionsTest extends TestCase {
 
@@ -34,6 +35,8 @@ public class OptionsTest extends TestCase {
 		assertEquals(false, JSONRPC2SessionOptions.DEFAULT_PRESERVE_OBJECT_MEMBER_ORDER);
 		assertEquals(false, JSONRPC2SessionOptions.DEFAULT_IGNORE_VERSION);
 		assertEquals(false, JSONRPC2SessionOptions.DEFAULT_PARSE_NON_STD_ATTRIBUTES);
+		assertEquals(0, JSONRPC2SessionOptions.DEFAULT_CONNECT_TIMEOUT);
+		assertEquals(0, JSONRPC2SessionOptions.DEFAULT_READ_TIMEOUT);
 		assertEquals(false, JSONRPC2SessionOptions.DEFAULT_TRUST_ALL);
 	}
 	
@@ -50,6 +53,9 @@ public class OptionsTest extends TestCase {
 		assertEquals(false, opts.preservesParseOrder());
 		assertEquals(false, opts.ignoresVersion());
 		assertEquals(false, opts.parsesNonStdAttributes());
+		assertEquals(0, opts.getConnectTimeout());
+		assertEquals(0, opts.getReadTimeout());
+		assertNull(opts.getProxy());
 		assertEquals(false, opts.trustsAllCerts());
 		
 		assertTrue(opts.isAllowedResponseContentType("application/json"));
@@ -128,6 +134,38 @@ public class OptionsTest extends TestCase {
 		
 		opts.parseNonStdAttributes(true);
 		assertTrue(opts.parsesNonStdAttributes());
+	}
+
+
+	public void testConnectTimeout() {
+
+		JSONRPC2SessionOptions opts = new JSONRPC2SessionOptions();
+
+		opts.setConnectTimeout(100);
+		assertEquals(100, opts.getConnectTimeout());
+	}
+
+
+	public void testReadTimeout() {
+
+		JSONRPC2SessionOptions opts = new JSONRPC2SessionOptions();
+
+		opts.setReadTimeout(500);
+		assertEquals(500, opts.getReadTimeout());
+	}
+
+
+	public void testProxy() {
+
+		JSONRPC2SessionOptions opts = new JSONRPC2SessionOptions();
+
+		opts.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8080)));
+
+		Proxy proxy = opts.getProxy();
+
+		assertNotNull(proxy);
+		assertEquals(Proxy.Type.HTTP, proxy.type());
+		assertNotNull(proxy.address());
 	}
 	
 	
