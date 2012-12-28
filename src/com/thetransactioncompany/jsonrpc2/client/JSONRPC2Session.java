@@ -107,7 +107,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2012-12-13)
+ * @version $version$ (2012-12-28)
  */
 public class JSONRPC2Session {
 
@@ -564,19 +564,20 @@ public class JSONRPC2Session {
 
 		// Get the response
 		RawResponse rawResponse = readRawResponse(con);
-		
 
-		// Check response content type?
-		if (options.getAllowedResponseContentTypes() != null) {
+		// Check response content type
+		String contentType = rawResponse.getContentType();
 
-			String mimeType = rawResponse.getContentType();
+		if (! options.isAllowedResponseContentType(contentType)) {
 
-			if (! options.isAllowedResponseContentType(mimeType)) {
+			String msg = null;
 
-				throw new JSONRPC2SessionException(
-						"The server returned an unexpected content type '" + mimeType + "' response", 
-						JSONRPC2SessionException.UNEXPECTED_CONTENT_TYPE);
-			}
+			if (contentType == null)
+				msg = "Missing Content-Type header in the HTTP response";
+			else
+				msg = "Unexpected \"" + contentType + "\" content type of the HTTP response";
+
+			throw new JSONRPC2SessionException(msg, JSONRPC2SessionException.UNEXPECTED_CONTENT_TYPE);
 		}
 
 		// Parse and return the response
