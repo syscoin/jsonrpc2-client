@@ -23,7 +23,27 @@ import junit.framework.TestCase;
 public class CookieTest extends TestCase {
 	
 	
-	public void testSingleCookie()
+	public void testCookieSet() {
+
+		HttpCookie c1 = new HttpCookie("sessionid", "1000");
+		HttpCookie c2 = new HttpCookie("sessionid", "2000");
+
+		System.out.println("Cookie 1 hash code: " + c1.hashCode());
+		System.out.println("Cookie 2 hash code: " + c2.hashCode());
+
+		assertEquals(c1.hashCode(), c2.hashCode());
+
+		Set<HttpCookie> cookieSet = new HashSet<HttpCookie>();
+
+		cookieSet.add(c1);
+		assertEquals(1, cookieSet.size());
+
+		cookieSet.add(c2);
+		assertEquals(1, cookieSet.size());
+	}
+
+
+	public void testSingleCookieOperation()
 		throws Exception {
 		
 		CookieTestServer server = new CookieTestServer(18080);
