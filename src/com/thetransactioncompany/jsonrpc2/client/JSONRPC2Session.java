@@ -389,23 +389,16 @@ public class JSONRPC2Session {
 	 */
 	private void storeCookies(final Map <String,List<String>> headers) {
 		
-		Iterator <Map.Entry<String,List<String>>> it = headers.entrySet().iterator();
-		
-		while (it.hasNext()) {
+		for (Map.Entry <String,List<String>> h: headers.entrySet()) {
 			
-			Map.Entry <String,List<String>> h = it.next();
-			
-			// Careful: for some reason HttpURLConnection allows null header names!
+			// Careful: for some reason HttpURLConnection allows 
+			// null header names!
 			if (  h          == null                       ||
 			      h.getKey() == null                       || 
 			    ! h.getKey().equalsIgnoreCase("Set-Cookie")  )
 				continue; // skip to next header
 			
-			Iterator <String> it2 = h.getValue().iterator();
-			
-			while (it2.hasNext()) {
-				
-				String cookieField = it2.next();
+			for (String cookieField: h.getValue()) {
 				
 				if (cookieField == null)
 					continue; // skip
