@@ -2,9 +2,11 @@ package com.thetransactioncompany.jsonrpc2.client;
 
 
 import java.io.*;
+
 import java.util.*;
 
 import com.thetransactioncompany.jsonrpc2.*;
+
 import com.thetransactioncompany.jsonrpc2.util.*;
 
 
@@ -21,25 +23,22 @@ public class CookieTestServer extends NanoHTTPD {
 		throws IOException {
 		
 		super(port, null);
-		
 	}
 	
 	
 	public NanoHTTPD.Response serve(final String uri, 
-			                        final String method, 
-			                        final Properties header, 
-			                        final Properties parms, 
-			                        final Properties files) {
+			                final String method, 
+			                final Properties header, 
+			                final Properties parms, 
+			                final Properties files) {
 		
-		System.out.println("Cookie: " + header.get("cookie"));
+		System.out.println("Cookie test server: Cookie: " + header.get("cookie"));
 		
 		JSONRPC2Response json = new JSONRPC2Response("Hello world!", 0);
 		
 		NanoHTTPD.Response out = new NanoHTTPD.Response(HTTP_OK, "application/json", json.toString());
 		
 		out.addHeader("Set-Cookie", "sessionid=123");
-		out.addHeader("Set-Cookie", "visit=456");
-		out.addHeader("Set-Cookie", "server=789");
 		
 		return out;
 	}

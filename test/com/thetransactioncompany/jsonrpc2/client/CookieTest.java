@@ -2,92 +2,60 @@ package com.thetransactioncompany.jsonrpc2.client;
 
 
 import java.io.*;
+
 import java.net.*;
+
 import java.util.*;
 
 import com.thetransactioncompany.jsonrpc2.*;
+
 import com.thetransactioncompany.jsonrpc2.util.*;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 
 /**
  * Tests the cookie management.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-08-23)
+ * @version $version$ (2013-01-17)
  */
 public class CookieTest extends TestCase {
 	
 	
-	public CookieTest(String name) {
-	
-			super(name);
-	
-	}
-	
-	
-	public void testMultipleCookies() {
+	public void testSingleCookie()
+		throws Exception {
 		
-		CookieTestServer server = null;
+		CookieTestServer server = new CookieTestServer(18080);
 		
-		try {
-			
-			server = new CookieTestServer(18080);
-			
-			
-		} catch (IOException e) {
-			
-			fail(e.getMessage());
-		}
-		
-		URL url = null;
-		
-		try {
-			url = new URL("http://localhost:18080/jsonrpc2/");
-		
-		} catch (MalformedURLException e) {
-			
-			fail(e.getMessage());
-		}
-		
+		URL url = new URL("http://localhost:18080/jsonrpc2/");
+
 		JSONRPC2Session client = new JSONRPC2Session(url);
 		
 		client.getOptions().acceptCookies(true);
 		
 		JSONRPC2Request req = new JSONRPC2Request("test.cookie", 0);
-		
-		JSONRPC2Response resp = null;
-		
-		try {
-			resp = client.send(req);
-		
-		} catch (JSONRPC2SessionException e) {
-			
-			fail(e.getMessage());
-		}
-		
+		JSONRPC2Response resp = client.send(req);
 		System.out.println(resp);
 		
-		Set<HttpCookie> cookies = client.getCookies();
 		
 		System.out.println("Listing received cookies:");
-		
-		Iterator <HttpCookie> it = cookies.iterator();
-		
-		while(it.hasNext())
-			System.out.println("\t" + it.next());
-		
-		// resend request
-		try {
-			resp = client.send(req);
-		
-		} catch (JSONRPC2SessionException e) {
-			
-			fail(e.getMessage());
+
+		Set<HttpCookie> cookies = client.getCookies();
+
+		assertEquals(1, cookies.size());
+
+		for (HttpCookie cookie: cookies) {
+
+			System.out.println("\t" + cookie);
+
+			assertEquals("sessionid", cookie.getName());
+			assertEquals("123", cookie.getValue());
 		}
 		
-		server.stop();
+		// resend request
+		resp = client.send(req);
 		
+		server.stop();
 	}
 }

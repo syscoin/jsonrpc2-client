@@ -382,7 +382,7 @@ public class JSONRPC2Session {
 	
 	
 	/**
-	 * Stores the cookies found the specified HTTP "Set-Cookie" headers.
+	 * Stores the cookies found in the specified HTTP headers.
 	 * 
 	 * @param The HTTP headers to examine for "Set-Cookie" headers. Must 
 	 *        not be {@code null}.
