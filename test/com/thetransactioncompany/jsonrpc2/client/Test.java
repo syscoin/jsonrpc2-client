@@ -6,14 +6,14 @@ import java.net.*;
 import com.thetransactioncompany.jsonrpc2.*;
 import com.thetransactioncompany.jsonrpc2.util.*;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 
 /**
  * Tests the JSONRPC2Session class.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2012-12-28)
+ * @version $version$ (2013-01-17)
  */
 public class Test extends TestCase {
 
@@ -61,6 +61,47 @@ public class Test extends TestCase {
 		}
 
 		System.out.println("Response: " + response);
+	}
+
+
+	public void testRequestEnableCompression() {
+
+		// Assumes a Json2Ldap service
+
+		JSONRPC2Request request = new JSONRPC2Request(RPC_METHOD_GOOD, 0);
+
+		URL url = null;
+
+		try {
+			url = new URL(URL_HTTP_GOOD);
+
+		} catch (MalformedURLException e) {
+			fail(e.getMessage());
+		}
+
+		JSONRPC2Session session = new JSONRPC2Session(url);
+
+		session.getOptions().enableCompression(true);
+		assertTrue(session.getOptions().enableCompression());
+
+		ResponseInspector responseInspector = new ResponseInspector();
+		session.setRawResponseInspector(responseInspector);
+
+
+		JSONRPC2Response response = null;
+
+		try {
+			response = session.send(request);
+
+		} catch (JSONRPC2SessionException e) {
+			fail(e.getMessage());
+		}
+
+		RawResponse rawResponse = responseInspector.getLastRawResponse();
+
+		assertEquals("gzip", rawResponse.getContentEncoding());
+
+		System.out.println("Response (decompressed): " + response);
 	}
 
 
