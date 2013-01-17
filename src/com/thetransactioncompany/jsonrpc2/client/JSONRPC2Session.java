@@ -107,7 +107,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2012-12-28)
+ * @version $version$ (2013-01-17)
  */
 public class JSONRPC2Session {
 
@@ -185,8 +185,11 @@ public class JSONRPC2Session {
 		TrustManager[] trustAllCerts = new TrustManager[] {
 			
 			new X509TrustManager() {
+
 				public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[]{}; }
+
 				public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+
 				public void checkServerTrusted(X509Certificate[] certs, String authType) { }
 			}
 		};
@@ -293,8 +296,8 @@ public class JSONRPC2Session {
 	 * 
 	 * @since 1.6
 	 * 
-	 * @return The optional inspector for the raw HTTP responses, {@code null} 
-	 *         if none is set.
+	 * @return The optional inspector for the raw HTTP responses, 
+	 *         {@code null} if none is set.
 	 */
 	public RawResponseInspector getRawResponseInspector() {
 		
@@ -303,18 +306,19 @@ public class JSONRPC2Session {
 	
 	
 	/**
-	 * Specifies an optional inspector for the raw HTTP responses to JSON-RPC
-	 * 2.0 requests and notifications. Its {@link RawResponseInspector#inspect
-	 * inspect} method will be called upon reception of a HTTP response.
+	 * Specifies an optional inspector for the raw HTTP responses to 
+	 * JSON-RPC 2.0 requests and notifications. Its 
+	 * {@link RawResponseInspector#inspect inspect} method will be called 
+	 * upon reception of a HTTP response.
 	 * 
-	 * <p>You can use the {@link RawResponseInspector} interface to retrieve
-	 * the unparsed response content and headers.
+	 * <p>You can use the {@link RawResponseInspector} interface to 
+	 * retrieve the unparsed response content and headers.
 	 * 
 	 * @since 1.6
 	 * 
 	 * @param responseInspector An optional inspector for the raw HTTP 
-	 *                          responses, {@code null} to remove a previously
-	 *                          set one.
+	 *                          responses, {@code null} to remove a 
+	 *                          previously set one.
 	 */
 	public void setRawResponseInspector(final RawResponseInspector responseInspector) {
 		
@@ -325,9 +329,9 @@ public class JSONRPC2Session {
 	/**
 	 * Gets all HTTP cookies currently stored in the client.
 	 * 
-	 * @return The HTTP cookies, or empty set if none were set by the server or
-	 *         cookies are not {@link JSONRPC2SessionOptions#acceptsCookies
-	 *         accepted}.
+	 * @return The HTTP cookies, or empty set if none were set by the 
+	 *         server or cookies are not 
+	 *         {@link JSONRPC2SessionOptions#acceptsCookies accepted}.
 	 */
 	public Set<HttpCookie> getCookies() {
 		
@@ -370,14 +374,18 @@ public class JSONRPC2Session {
 			
 			con.setRequestProperty("Cookie", buf.toString());
 		}
+
+		// Add "Accept-Encoding: gzip" header?
+		if (options.enableCompression())
+			con.setRequestProperty("Accept-Encoding", "gzip");
 	}
 	
 	
 	/**
 	 * Stores the cookies found the specified HTTP "Set-Cookie" headers.
 	 * 
-	 * @param The HTTP headers to examine for "Set-Cookie" headers. Must not
-	 *        be {@code null}.
+	 * @param The HTTP headers to examine for "Set-Cookie" headers. Must 
+	 *        not be {@code null}.
 	 */
 	private void storeCookies(final Map <String,List<String>> headers) {
 		
@@ -474,7 +482,8 @@ public class JSONRPC2Session {
 	
 	
 	/**
-	 * Posts string data (i.e. JSON string) to the specified URL connection.
+	 * Posts string data (i.e. JSON string) to the specified URL 
+	 * connection.
 	 *
 	 * @param con  The URL connection. Must be in HTTP POST mode. Must not 
 	 *             be {@code null}.
@@ -503,8 +512,8 @@ public class JSONRPC2Session {
 	
 	/**
 	 * Reads the raw response from an URL connection (after HTTP POST). 
-	 * Invokes the {@link RawResponseInspector} if configured and stores any
-	 * cookies {@link JSONRPC2SessionOptions#storeCookies if required}.
+	 * Invokes the {@link RawResponseInspector} if configured and stores 
+	 * any cookies {@link JSONRPC2SessionOptions#storeCookies if required}.
 	 *
 	 * @param con The URL connection. It should contain ready data for
 	 *            retrieval. Must not be {@code null}.
@@ -519,7 +528,6 @@ public class JSONRPC2Session {
 		RawResponse rawResponse = null;
 		
 		try {
-
 			rawResponse = RawResponse.parse((HttpURLConnection)con);
 
 		} catch (IOException e) {
@@ -605,22 +613,20 @@ public class JSONRPC2Session {
 		Object resID = response.getID();
 
 		if (reqID != null && resID !=null && reqID.toString().equals(resID.toString()) ) {
-
 			// ok
 		}
 		else if (reqID == null && resID == null) {
-
 			// ok
 		}
 		else if (! response.indicatesSuccess() && ( response.getError().getCode() == -32700 ||
 				response.getError().getCode() == -32600 ||
 				response.getError().getCode() == -32603    )) {
-
 			// ok
 		}
 		else {
 			throw new JSONRPC2SessionException(
-					"Invalid JSON-RPC 2.0 response: ID mismatch: Returned " + resID.toString() + ", expected " + reqID.toString(),
+					"Invalid JSON-RPC 2.0 response: ID mismatch: Returned " + 
+					resID.toString() + ", expected " + reqID.toString(),
 					JSONRPC2SessionException.BAD_RESPONSE);
 		}
 

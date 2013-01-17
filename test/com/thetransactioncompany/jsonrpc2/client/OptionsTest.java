@@ -7,14 +7,14 @@ import com.thetransactioncompany.jsonrpc2.*;
 
 import com.thetransactioncompany.jsonrpc2.util.*;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 
 /**
  * Tests the JSONRPC2SessionOptions class.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2012-13-13)
+ * @version $version$ (2013-01-17)
  */
 public class OptionsTest extends TestCase {
 
@@ -37,6 +37,7 @@ public class OptionsTest extends TestCase {
 		assertEquals(false, JSONRPC2SessionOptions.DEFAULT_PARSE_NON_STD_ATTRIBUTES);
 		assertEquals(0, JSONRPC2SessionOptions.DEFAULT_CONNECT_TIMEOUT);
 		assertEquals(0, JSONRPC2SessionOptions.DEFAULT_READ_TIMEOUT);
+		assertFalse(JSONRPC2SessionOptions.DEFAULT_ENABLE_COMPRESSION);
 		assertEquals(false, JSONRPC2SessionOptions.DEFAULT_TRUST_ALL);
 	}
 	
@@ -56,6 +57,7 @@ public class OptionsTest extends TestCase {
 		assertEquals(0, opts.getConnectTimeout());
 		assertEquals(0, opts.getReadTimeout());
 		assertNull(opts.getProxy());
+		assertFalse(opts.enableCompression());
 		assertEquals(false, opts.trustsAllCerts());
 		
 		assertTrue(opts.isAllowedResponseContentType("application/json"));
@@ -166,6 +168,15 @@ public class OptionsTest extends TestCase {
 		assertNotNull(proxy);
 		assertEquals(Proxy.Type.HTTP, proxy.type());
 		assertNotNull(proxy.address());
+	}
+
+
+	public void testCompression() {
+
+		JSONRPC2SessionOptions opts = new JSONRPC2SessionOptions();
+
+		opts.enableCompression(true);
+		assertTrue(opts.enableCompression());
 	}
 	
 	

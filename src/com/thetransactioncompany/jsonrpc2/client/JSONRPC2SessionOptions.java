@@ -31,13 +31,15 @@ import java.util.regex.Pattern;
  *     <li>Set an HTTP connect timeout.
  *     <li>Set an HTTP read timeout.
  *     <li>Set an HTTP proxy.
+ *     <li>Enable HTTP response compression (using GZIP or DEFLATE content
+ *         encoding).
  *     <li>Trust all X.509 server certificates (for HTTPS connections), 
  *         including self-signed.
  * </ul>
  *
  * @since 1.4
  * @author Vladimir Dzhuvinov
- * @version $version$ (2012-12-13)
+ * @version $version$ (2013-01-17)
  */
 public class JSONRPC2SessionOptions {
 	
@@ -170,6 +172,18 @@ public class JSONRPC2SessionOptions {
 	 * Optional HTTP proxy.
 	 */
 	private Proxy proxy = null;
+
+
+	/**
+	 * Enable / disable HTTP GZIP and DEFLATE compression.
+	 */
+	private boolean enableCompression = DEFAULT_ENABLE_COMPRESSION;
+
+
+	/**
+	 * The default HTTP GZIP and DEFLATE compression enable policy.
+	 */
+	public static final boolean DEFAULT_ENABLE_COMPRESSION = false;
 	
 	
 	/**
@@ -217,6 +231,9 @@ public class JSONRPC2SessionOptions {
 	 * {@link #setReadTimeout}.
 	 *
 	 * <p>No proxy is used. To specify one use {@link #setProxy}.
+	 *
+	 * <p>HTTP response compression (GZIP or DEFLATE) is disabled. To 
+	 * enable it use {@link #enableCompression(boolean)}.
 	 *
 	 * <p>Self-signed X.509 certificates presented by the JSON-RPC 2.0
 	 * server will not be accepted. To relax certificate cheking use
@@ -554,6 +571,35 @@ public class JSONRPC2SessionOptions {
 	public Proxy getProxy() {
 
 		return proxy;
+	}
+
+
+	/**
+	 * Enables or disables HTTP response compression using GZIP or DEFLATE
+	 * content encoding. If compression is enabled but the HTTP server 
+	 * doesn't support compression this setting will have no effect.
+	 *
+	 * @param enable If {@code true} HTTP compression will be enabled, 
+	 *               else compression will be disabled.
+	 */
+	public void enableCompression(final boolean enable) {
+
+		enableCompression = enable;
+	}
+
+
+	/**
+	 * Checks if HTTP response compression using GZIP or DEFLATE content 
+	 * encoding is enabled or disabled. If compression is enabled but the 
+	 * HTTP server doesn't support compression this setting will have no 
+	 * effect.
+	 *
+	 * @return {@code true} if HTTP compression is enabled, else 
+	 *         {@code false}.
+	 */
+	public boolean enableCompression() {
+
+		return enableCompression;
 	}
 	
 	

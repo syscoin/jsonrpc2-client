@@ -1,6 +1,6 @@
 JSON-RPC 2.0 Client
 
-Copyright (c) Vladimir Dzhuvinov, 2010 - 2012
+Copyright (c) Vladimir Dzhuvinov, 2010 - 2013
 
 
 README
@@ -22,6 +22,9 @@ Optional client session features:
 	  responses.
 	 
 	* Set an HTTP proxy.
+	
+	* Enable HTTP response compression using GZIP and DEFLATE content 
+	  encoding.
 	  
 	* Preserve parse order of JSON object members in JSON-RPC 2.0 response 
 	  results (for human facing clients, e.g. the JSON-RPC 2.0 Shell).

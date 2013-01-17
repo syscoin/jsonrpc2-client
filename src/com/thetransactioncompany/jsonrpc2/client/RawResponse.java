@@ -2,6 +2,7 @@ package com.thetransactioncompany.jsonrpc2.client;
 
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
@@ -10,6 +11,10 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
+import java.util.zip.GZIPInputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
+
 
 /**
  * Represents the raw HTTP response to a JSON-RPC 2.0 request or notification. 
@@ -17,7 +22,7 @@ import java.util.Map;
  *
  * @since 1.6
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-08-23)
+ * @version $version$ (2013-01-17)
  */
 public class RawResponse {
 
@@ -73,25 +78,36 @@ public class RawResponse {
 	/**
 	 * Parses the raw HTTP response from the specified URL connection.
 	 * 
-	 * @param connection The URL connection, must be in state completed and not
-	 *                   {@code null}.
+	 * @param connection The URL connection, must be in state completed and 
+	 *                   not {@code null}.
 	 * 
 	 * @throws IOException If the response content couldn't be read.
 	 */
 	protected static RawResponse parse(final HttpURLConnection connection)
 		throws IOException {
 
-		if (connection == null)
-			throw new IllegalArgumentException("The URL connection must not be null");
+		// Check for HTTP compression
+		String encoding = connection.getContentEncoding();
 
-		RawResponse response = new RawResponse();
+		InputStream is;
 
-		// read the response content, throws IO exception
+		if (encoding != null && encoding.equalsIgnoreCase("gzip"))
+			is = new GZIPInputStream(connection.getInputStream());
+
+		else if (encoding != null && encoding.equalsIgnoreCase("deflate"))
+			is = new InflaterInputStream(connection.getInputStream(), new Inflater(true));
+
+		else
+			is = connection.getInputStream();
+
+
+		// Read the response content
 		StringBuilder responseText = new StringBuilder();
 
-		BufferedReader input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		BufferedReader input = new BufferedReader(new InputStreamReader(is));
 
 		String line;
+
 		while ((line = input.readLine()) != null) {
 			responseText.append(line);
 			responseText.append(System.getProperty("line.separator"));
@@ -99,19 +115,20 @@ public class RawResponse {
 
 		input.close();
 
+		RawResponse response = new RawResponse();
+
 		response.content = responseText.toString();
 		
-		// save HTTP code + message
+		// Save HTTP code + message
 		response.statusCode = connection.getResponseCode();
 		response.statusMessage = connection.getResponseMessage();
 
-		// save headers
-
+		// Save headers
 		response.headers = connection.getHeaderFields();
 
 		response.contentLength = connection.getContentLength();
 		response.contentType = connection.getContentType();
-		response.contentEncoding = connection.getContentEncoding();
+		response.contentEncoding = encoding;
 
 		return response;
 	}
@@ -130,8 +147,8 @@ public class RawResponse {
 	
 	
 	/**
-	 * Gets the HTTP response status message, if any, returned along with the 
-	 * status code from a server.
+	 * Gets the HTTP response status message, if any, returned along with 
+	 * the status code from a server.
 	 *  
 	 * @return The HTTP status message, or {@code null}.
 	 */
@@ -154,9 +171,9 @@ public class RawResponse {
 	
 	/**
 	 * Returns an unmodifiable Map of the header fields. The Map keys are 
-	 * Strings that represent the response header field names. Each Map value 
-	 * is an unmodifiable List of Strings that represents the corresponding 
-	 * field values.
+	 * Strings that represent the response header field names. Each Map 
+	 * value is an unmodifiable List of Strings that represents the 
+	 * corresponding field values.
 	 * 
 	 * @return A Map of the header fields.
 	 */
@@ -167,14 +184,14 @@ public class RawResponse {
 
 
 	/**
-	 * Returns the value of the named header field. If called on a connection 
-	 * that sets the same header multiple times with possibly different values,
-	 * only the last value is returned.
+	 * Returns the value of the named header field. If called on a 
+	 * connection that sets the same header multiple times with possibly 
+	 * different values, only the last value is returned.
 	 *  
 	 * @param name The name of the header.
 	 * 
-	 * @return The value of the named header field, {@code null} if there is no 
-	 *         such field in the header.
+	 * @return The value of the named header field, {@code null} if there 
+	 *         is no such field in the header.
 	 */
 	public String getHeaderField(final String name) {
 
@@ -190,8 +207,8 @@ public class RawResponse {
 	/**
 	 * Returns the value of the "Content-Length" header field. 
 	 * 
-	 * @return The content length of the response, or -1 if the content length 
-	 *         is not known.
+	 * @return The content length of the response, or -1 if the content 
+	 *         length  is not known.
 	 */
 	public int getContentLength() {
 
@@ -202,7 +219,8 @@ public class RawResponse {
 	/**
 	 * Returns the value of the "Content-Type" header field.
 	 * 
-	 * @return The content type of the response, or {@code null} if not known.
+	 * @return The content type of the response, or {@code null} if not 
+	 *         known.
 	 */
 	public String getContentType() {
 
@@ -219,5 +237,4 @@ public class RawResponse {
 
 		return contentEncoding;
 	}
-
 }
