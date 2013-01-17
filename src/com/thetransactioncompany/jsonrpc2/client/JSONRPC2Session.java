@@ -389,9 +389,6 @@ public class JSONRPC2Session {
 	 */
 	private void storeCookies(final Map <String,List<String>> headers) {
 		
-		if (headers == null)
-			throw new IllegalArgumentException("The HTTP headers must not be null");
-		
 		Iterator <Map.Entry<String,List<String>>> it = headers.entrySet().iterator();
 		
 		while (it.hasNext()) {
