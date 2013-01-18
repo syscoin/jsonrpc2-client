@@ -4,8 +4,11 @@ package com.thetransactioncompany.jsonrpc2.client;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -13,11 +16,8 @@ import java.security.SecureRandom;
 
 import java.security.cert.X509Certificate;
 
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -107,7 +107,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2013-01-17)
+ * @version $version$ (2013-01-18)
  */
 public class JSONRPC2Session {
 
@@ -139,9 +139,9 @@ public class JSONRPC2Session {
 	
 	
 	/**
-	 * Optional HTTP cookie store. 
+	 * Optional HTTP cookie manager. 
 	 */
-	private Set<HttpCookie> cookies = new HashSet<HttpCookie>();
+	private CookieManager cookieManager;
 
 
 	/**
@@ -327,15 +327,21 @@ public class JSONRPC2Session {
 	
 	
 	/**
-	 * Gets all HTTP cookies currently stored in the client.
+	 * Gets all non-expired HTTP cookies currently stored in the client.
 	 * 
-	 * @return The HTTP cookies, or empty set if none were set by the 
+	 * @return The HTTP cookies, or empty list if none were set by the 
 	 *         server or cookies are not 
-	 *         {@link JSONRPC2SessionOptions#acceptsCookies accepted}.
+	 *         {@link JSONRPC2SessionOptions#acceptCookies accepted}.
 	 */
-	public Set<HttpCookie> getCookies() {
+	public List<HttpCookie> getCookies() {
 		
-		return cookies;
+		if (cookieManager == null) {
+
+			List<HttpCookie> emptyList = Collections.emptyList();
+			return emptyList;
+		}
+
+		return cookieManager.getCookieStore().getCookies();
 	}	
 
 
@@ -343,8 +349,11 @@ public class JSONRPC2Session {
 	 * Applies the required headers to the specified URL connection.
 	 *
 	 * @param con The URL connection which must be open.
+	 *
+	 * @throws JSONRPC2SessionException If an exception is encountered.
 	 */
-	private void applyHeaders(final URLConnection con) {
+	private void applyHeaders(final URLConnection con)
+		throws JSONRPC2SessionException {
 
 		// Add "Content-Type" header?
 		if (options.getRequestContentType() != null)
@@ -353,64 +362,25 @@ public class JSONRPC2Session {
 		// Add "Origin" header?
 		if (options.getOrigin() != null)
 			con.setRequestProperty("Origin", options.getOrigin());
+
+		// Add "Accept-Encoding: gzip, deflate" header?
+		if (options.enableCompression())
+			con.setRequestProperty("Accept-Encoding", "gzip, deflate");
 		
 		// Add "Cookie" headers?
-		if (options.acceptsCookies()) {
-			
-			Iterator <HttpCookie> it = cookies.iterator();
-			
+		if (options.acceptCookies()) {
+
 			StringBuilder buf = new StringBuilder();
 			
-			while (it.hasNext()) {
-				
-				HttpCookie c = it.next();
-				
-				buf.append(c.toString());
-				
-				// look ahead
-				if (it.hasNext())
-					buf.append("; ");
-			}
-			
-			con.setRequestProperty("Cookie", buf.toString());
-		}
+			for (HttpCookie cookie: getCookies()) {
 
-		// Add "Accept-Encoding: gzip" header?
-		if (options.enableCompression())
-			con.setRequestProperty("Accept-Encoding", "gzip");
-	}
-	
-	
-	/**
-	 * Stores the cookies found in the specified HTTP headers.
-	 * 
-	 * @param The HTTP headers to examine for "Set-Cookie" headers. Must 
-	 *        not be {@code null}.
-	 */
-	private void storeCookies(final Map <String,List<String>> headers) {
-		
-		for (Map.Entry <String,List<String>> h: headers.entrySet()) {
-			
-			// Careful: for some reason HttpURLConnection allows 
-			// null header names!
-			if (  h          == null                       ||
-			      h.getKey() == null                       || 
-			    ! h.getKey().equalsIgnoreCase("Set-Cookie")  )
-				continue; // skip to next header
-			
-			for (String cookieField: h.getValue()) {
-				
-				if (cookieField == null)
-					continue; // skip
-				
-				try {
-					cookies.addAll(HttpCookie.parse(cookieField));
-					
-				} catch (IllegalArgumentException e) {
-					// skip
-					continue;
-				}
+				if (buf.length() > 0)
+					buf.append("; ");
+
+				buf.append(cookie.toString());
 			}
+
+			con.setRequestProperty("Cookie", buf.toString());
 		}
 	}
 	
@@ -510,7 +480,7 @@ public class JSONRPC2Session {
 	 *
 	 * @return The raw response.
 	 *
-	 * @throws JSONRPC2SessionException If an I/O exception is encountered.
+	 * @throws JSONRPC2SessionException If an exception is encountered.
 	 */
 	private RawResponse readRawResponse(final URLConnection con)
 		throws JSONRPC2SessionException {
@@ -531,8 +501,30 @@ public class JSONRPC2Session {
 		if (responseInspector != null)
 			responseInspector.inspect(rawResponse);
 		
-		if (options.acceptsCookies())
-			storeCookies(rawResponse.getHeaderFields());
+		if (options.acceptCookies()) {
+
+			// Init cookie manager?
+			if (cookieManager == null)
+				cookieManager = new CookieManager(null, CookiePolicy.ACCEPT_ALL);
+
+			try {
+				cookieManager.put(con.getURL().toURI(), rawResponse.getHeaderFields());
+
+			} catch (URISyntaxException e) {
+
+				throw new JSONRPC2SessionException(
+					"Network exception: " + e.getMessage(),
+					JSONRPC2SessionException.NETWORK_EXCEPTION,
+					e);
+
+			} catch (IOException e) {
+
+				throw new JSONRPC2SessionException(
+					"I/O exception: " + e.getMessage(),
+					JSONRPC2SessionException.NETWORK_EXCEPTION,
+					e);
+			}
+		}
 		
 		return rawResponse;
 	}

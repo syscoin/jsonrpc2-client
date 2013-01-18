@@ -310,7 +310,7 @@ public class JSONRPC2SessionOptions {
 	 * @return {@code true} if HTTP cookies are accepted, else 
 	 *         {@code false}.
 	 */
-	public boolean acceptsCookies() {
+	public boolean acceptCookies() {
 	
 		return acceptCookies;
 	}

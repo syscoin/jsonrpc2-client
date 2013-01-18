@@ -1,8 +1,6 @@
 package com.thetransactioncompany.jsonrpc2.client;
 
 
-import java.io.*;
-
 import java.net.*;
 
 import java.util.*;
@@ -18,7 +16,7 @@ import junit.framework.TestCase;
  * Tests the cookie management.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2013-01-17)
+ * @version $version$ (2013-01-18)
  */
 public class CookieTest extends TestCase {
 	
@@ -40,6 +38,11 @@ public class CookieTest extends TestCase {
 
 		cookieSet.add(c2);
 		assertEquals(1, cookieSet.size());
+
+		for (HttpCookie c: cookieSet) {
+
+			assertEquals("1000", c.getValue());
+		}
 	}
 
 
@@ -61,7 +64,7 @@ public class CookieTest extends TestCase {
 		
 		System.out.println("Listing received cookies:");
 
-		Set<HttpCookie> cookies = client.getCookies();
+		List<HttpCookie> cookies = client.getCookies();
 
 		assertEquals(1, cookies.size());
 

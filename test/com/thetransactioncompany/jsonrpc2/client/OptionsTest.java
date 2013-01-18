@@ -14,15 +14,9 @@ import junit.framework.TestCase;
  * Tests the JSONRPC2SessionOptions class.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2013-01-17)
+ * @version $version$ (2013-01-18)
  */
 public class OptionsTest extends TestCase {
-
-
-        public OptionsTest(String name) {
-                
-                super(name);
-        }
 
 
 	public void testDefaultValues() {
@@ -49,7 +43,7 @@ public class OptionsTest extends TestCase {
 		assertEquals("application/json", opts.getRequestContentType());
 		assertEquals("application/json", opts.getAllowedResponseContentTypes()[0]);
 		assertEquals("text/plain", opts.getAllowedResponseContentTypes()[1]);
-		assertEquals(false, opts.acceptsCookies());
+		assertEquals(false, opts.acceptCookies());
 		assertEquals(null, opts.getOrigin());
 		assertEquals(false, opts.preservesParseOrder());
 		assertEquals(false, opts.ignoresVersion());
@@ -100,7 +94,7 @@ public class OptionsTest extends TestCase {
 		JSONRPC2SessionOptions opts = new JSONRPC2SessionOptions();
 			
 		opts.acceptCookies(true);
-		assertTrue(opts.acceptsCookies());
+		assertTrue(opts.acceptCookies());
 	}
 		
 	
