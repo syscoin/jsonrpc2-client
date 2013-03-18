@@ -72,3 +72,6 @@ version 1.12 (2013-01-22)
 	  content encoding.
 	* Switches cookie handling to java.net.CookieManager to add support for
 	  cookie replacement and expiration.
+
+version 1.13 (2013-03-18)
+	* Forces UTF-8 output for POSTed JSON-RPC 2.0 strings.

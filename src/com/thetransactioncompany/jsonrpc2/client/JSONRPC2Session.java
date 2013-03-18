@@ -107,7 +107,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2013-01-18)
+ * @version $version$ (2013-03-18)
  */
 public class JSONRPC2Session {
 
@@ -455,7 +455,7 @@ public class JSONRPC2Session {
 		throws JSONRPC2SessionException {
 		
 		try {
-			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream(), "UTF-8");
 			wr.write(data);
 			wr.flush();
 			wr.close();
