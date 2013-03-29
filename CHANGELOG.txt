@@ -75,3 +75,8 @@ version 1.12 (2013-01-22)
 
 version 1.13 (2013-03-18)
 	* Forces UTF-8 output for POSTed JSON-RPC 2.0 strings.
+
+version 1.14 (2013-03-29)
+	* Switches project build from Ant to Maven.
+	* Expects UTF-8 input for HTTP responses.
+	* Upgrades to JSON-RPC 2.0 Base 1.34.

@@ -1,0 +1,7 @@
+com/thetransactioncompany/jsonrpc2/client/JSONRPC2SessionOptions.class
+com/thetransactioncompany/jsonrpc2/client/JSONRPC2Session$1.class
+com/thetransactioncompany/jsonrpc2/client/ConnectionConfigurator.class
+com/thetransactioncompany/jsonrpc2/client/RawResponse.class
+com/thetransactioncompany/jsonrpc2/client/JSONRPC2SessionException.class
+com/thetransactioncompany/jsonrpc2/client/RawResponseInspector.class
+com/thetransactioncompany/jsonrpc2/client/JSONRPC2Session.class

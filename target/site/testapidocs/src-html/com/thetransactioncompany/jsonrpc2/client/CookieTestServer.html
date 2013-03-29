@@ -1,0 +1,111 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package com.thetransactioncompany.jsonrpc2.client;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    <a name="line.3"></a>
+<FONT color="green">004</FONT>    import java.io.*;<a name="line.4"></a>
+<FONT color="green">005</FONT>    <a name="line.5"></a>
+<FONT color="green">006</FONT>    import java.util.*;<a name="line.6"></a>
+<FONT color="green">007</FONT>    <a name="line.7"></a>
+<FONT color="green">008</FONT>    import com.thetransactioncompany.jsonrpc2.*;<a name="line.8"></a>
+<FONT color="green">009</FONT>    <a name="line.9"></a>
+<FONT color="green">010</FONT>    import com.thetransactioncompany.jsonrpc2.util.*;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    /**<a name="line.13"></a>
+<FONT color="green">014</FONT>     * Test JSON-RPC 2.0 server with cookies.<a name="line.14"></a>
+<FONT color="green">015</FONT>     *<a name="line.15"></a>
+<FONT color="green">016</FONT>     * @author Vladimir Dzhuvinov<a name="line.16"></a>
+<FONT color="green">017</FONT>     * @version $version$ (2011-08-23)<a name="line.17"></a>
+<FONT color="green">018</FONT>     */<a name="line.18"></a>
+<FONT color="green">019</FONT>    public class CookieTestServer extends NanoHTTPD {<a name="line.19"></a>
+<FONT color="green">020</FONT>            <a name="line.20"></a>
+<FONT color="green">021</FONT>            <a name="line.21"></a>
+<FONT color="green">022</FONT>            public CookieTestServer(final int port)<a name="line.22"></a>
+<FONT color="green">023</FONT>                    throws IOException {<a name="line.23"></a>
+<FONT color="green">024</FONT>                    <a name="line.24"></a>
+<FONT color="green">025</FONT>                    super(port, null);<a name="line.25"></a>
+<FONT color="green">026</FONT>            }<a name="line.26"></a>
+<FONT color="green">027</FONT>            <a name="line.27"></a>
+<FONT color="green">028</FONT>            <a name="line.28"></a>
+<FONT color="green">029</FONT>            public NanoHTTPD.Response serve(final String uri, <a name="line.29"></a>
+<FONT color="green">030</FONT>                                            final String method, <a name="line.30"></a>
+<FONT color="green">031</FONT>                                            final Properties header, <a name="line.31"></a>
+<FONT color="green">032</FONT>                                            final Properties parms, <a name="line.32"></a>
+<FONT color="green">033</FONT>                                            final Properties files) {<a name="line.33"></a>
+<FONT color="green">034</FONT>                    <a name="line.34"></a>
+<FONT color="green">035</FONT>                    System.out.println("Cookie test server: Cookie: " + header.get("cookie"));<a name="line.35"></a>
+<FONT color="green">036</FONT>                    <a name="line.36"></a>
+<FONT color="green">037</FONT>                    JSONRPC2Response json = new JSONRPC2Response("Hello world!", 0);<a name="line.37"></a>
+<FONT color="green">038</FONT>                    <a name="line.38"></a>
+<FONT color="green">039</FONT>                    NanoHTTPD.Response out = new NanoHTTPD.Response(HTTP_OK, "application/json", json.toString());<a name="line.39"></a>
+<FONT color="green">040</FONT>                    <a name="line.40"></a>
+<FONT color="green">041</FONT>                    out.addHeader("Set-Cookie", "sessionid=123");<a name="line.41"></a>
+<FONT color="green">042</FONT>                    <a name="line.42"></a>
+<FONT color="green">043</FONT>                    return out;<a name="line.43"></a>
+<FONT color="green">044</FONT>            }<a name="line.44"></a>
+<FONT color="green">045</FONT>    }<a name="line.45"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

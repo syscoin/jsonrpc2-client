@@ -64,13 +64,11 @@ Package content:
 	
 	Example.java                  Example client session usage.
 	
-	build.xml                     The Apache Ant build file.
+	pom.xml                       The Maven build file.
 	
-	lib/                          The package dependencies and their licenses.
+	lib/                          The package dependencies.
         
 	src/			      The source code for this package.
-	
-	test/                         JUnit tests for this package.
 
 
 
