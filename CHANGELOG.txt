@@ -83,3 +83,6 @@ version 1.14 (2013-03-29)
 
 version 1.14.1 (2013-03-30)
 	* Updates Maven pom.xml.
+	
+version 1.14.2 (2013-03-30)
+	* Fixes bug in assembly-dist.xml.
