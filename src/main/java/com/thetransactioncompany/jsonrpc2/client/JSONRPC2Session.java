@@ -107,7 +107,6 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2013-03-29)
  */
 public class JSONRPC2Session {
 

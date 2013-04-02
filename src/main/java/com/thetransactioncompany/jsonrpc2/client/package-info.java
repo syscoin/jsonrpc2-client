@@ -9,6 +9,5 @@
  * JSON-RPC 2.0 messages.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$
  */
 package com.thetransactioncompany.jsonrpc2.client;

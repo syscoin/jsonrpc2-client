@@ -13,7 +13,6 @@ import junit.framework.TestCase;
  * Tests the JSONRPC2Session class.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2013-03-29)
  */
 public class Test extends TestCase {
 

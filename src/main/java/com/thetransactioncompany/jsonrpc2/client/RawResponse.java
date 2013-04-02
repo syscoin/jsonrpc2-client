@@ -22,7 +22,6 @@ import java.util.zip.InflaterInputStream;
  *
  * @since 1.6
  * @author Vladimir Dzhuvinov
- * @version $version$ (2013-03-29)
  */
 public class RawResponse {
 

@@ -39,7 +39,6 @@ import java.util.regex.Pattern;
  *
  * @since 1.4
  * @author Vladimir Dzhuvinov
- * @version $version$ (2013-01-17)
  */
 public class JSONRPC2SessionOptions {
 	

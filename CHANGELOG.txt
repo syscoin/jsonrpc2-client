@@ -86,3 +86,6 @@ version 1.14.1 (2013-03-30)
 	
 version 1.14.2 (2013-03-30)
 	* Fixes bug in assembly-dist.xml.
+
+version 1.14.3 (2013-04-02)
+	* Publishes library to Maven Central.

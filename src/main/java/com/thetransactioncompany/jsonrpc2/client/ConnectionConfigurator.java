@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
  *
  * @since 1.5
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-07-18)
  */
 public interface ConnectionConfigurator {
 

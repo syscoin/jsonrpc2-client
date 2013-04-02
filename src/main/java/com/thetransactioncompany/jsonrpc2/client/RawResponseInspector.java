@@ -8,7 +8,6 @@ package com.thetransactioncompany.jsonrpc2.client;
  *
  * @since 1.6
  * @author Vladimir Dzhuvinov
- * @version $version$ (2011-08-23)
  */
 public interface RawResponseInspector {
 

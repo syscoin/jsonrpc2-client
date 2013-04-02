@@ -38,7 +38,6 @@ Optional client session features:
 	  self-signed.
 
 
-
 Requirements:
 
 	* Java 1.5 or later
@@ -46,30 +45,6 @@ Requirements:
 	* The JSON-RPC 2.0 Base package com.thetransactioncompany.jsonrpc2 to 
 	  represent, serialise and parse JSON-RPC 2.0 messages. Available from
 	  http://software.dzhuvinov.com/json-rpc-2.0-base.html
-
-
-
-Package content:
-
-        README.txt                    This file.
-        
-        LICENSE.txt                   The software license.
-	
-	CHANGELOG.txt                 The change log.
-	
-	jsonrpc2-client-{version}.jar JAR file containing the compiled package
-	                              classes.
-				  
-	javadoc/                      The Java Docs for this package.
-	
-	Example.java                  Example client session usage.
-	
-	pom.xml                       The Maven build file.
-	
-	lib/                          The package dependencies.
-        
-	src/			      The source code for this package.
-
 
 
 For complete JSON-RPC 2.0 Client documentation, examples and updates visit

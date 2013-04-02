@@ -6,7 +6,6 @@ package com.thetransactioncompany.jsonrpc2.client;
  * cause type to be specified to ease diagnostics and exception reporting.
  *
  * @author Vladimir Dzhuvinov
- * @version $version$ (2012-02-16)
  */
 public class JSONRPC2SessionException extends Exception {
 
