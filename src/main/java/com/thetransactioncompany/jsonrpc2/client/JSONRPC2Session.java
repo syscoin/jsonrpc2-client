@@ -596,21 +596,18 @@ public class JSONRPC2Session {
 		Object reqID = request.getID();
 		Object resID = response.getID();
 
-		if (reqID != null && resID !=null && reqID.toString().equals(resID.toString()) ) {
+		if (reqID != null && resID != null && reqID.toString().equals(resID.toString()) ) {
 			// ok
-		}
-		else if (reqID == null && resID == null) {
+		} else if (reqID == null && resID == null) {
 			// ok
-		}
-		else if (! response.indicatesSuccess() && ( response.getError().getCode() == -32700 ||
-				response.getError().getCode() == -32600 ||
-				response.getError().getCode() == -32603    )) {
+		} else if (! response.indicatesSuccess() && ( response.getError().getCode() == -32700 ||
+			     response.getError().getCode() == -32600 ||
+			     response.getError().getCode() == -32603    )) {
 			// ok
-		}
-		else {
+		} else {
 			throw new JSONRPC2SessionException(
 					"Invalid JSON-RPC 2.0 response: ID mismatch: Returned " + 
-					resID.toString() + ", expected " + reqID.toString(),
+					resID + ", expected " + reqID,
 					JSONRPC2SessionException.BAD_RESPONSE);
 		}
 

@@ -4,7 +4,6 @@ package com.thetransactioncompany.jsonrpc2.client;
 import java.net.*;
 
 import com.thetransactioncompany.jsonrpc2.*;
-import com.thetransactioncompany.jsonrpc2.util.*;
 
 import junit.framework.TestCase;
 
@@ -16,7 +15,7 @@ import junit.framework.TestCase;
  */
 public class Test extends TestCase {
 
-	public static final String URL_HTTP_GOOD = "http://localhost:8080/json2ldap/";
+	public static final String URL_HTTP_GOOD = "http://json2ldap.nimbusds.cloudbees.net/";
 	public static final String URL_HTTP_BAD_HOST = "http://bad-host.com/ws/";
 	public static final String URL_HTTP_BAD_PORT = "http://localhost:9999/";
 	public static final String URL_HTTP_BAD_IP = "http://192.168.0.99";

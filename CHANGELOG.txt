@@ -89,3 +89,6 @@ version 1.14.2 (2013-03-30)
 
 version 1.14.3 (2013-04-02)
 	* Publishes library to Maven Central.
+
+version 1.14.4 (2013-06-13)
+	* Fixes exception reporting on request / response ID mismatch.
