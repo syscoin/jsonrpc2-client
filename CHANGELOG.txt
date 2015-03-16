@@ -94,5 +94,6 @@ version 1.14.4 (2013-06-13)
 	* Fixes exception reporting on request / response ID mismatch.
 
 version 1.15 (2015-03-16)
+    * Cleans up code.
     * Upgrades to JSON-RPC 2.0 Base 1.36.
     * Upgrades to JSON Smart 1.3.1.

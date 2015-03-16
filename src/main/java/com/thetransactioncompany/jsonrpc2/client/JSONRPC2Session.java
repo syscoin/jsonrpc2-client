@@ -146,7 +146,7 @@ public class JSONRPC2Session {
 	/**
 	 * Trust-all-certs (including self-signed) SSL socket factory.
 	 */
-	private static SSLSocketFactory trustAllSocketFactory = createTrustAllSocketFactory();
+	private static final SSLSocketFactory trustAllSocketFactory = createTrustAllSocketFactory();
 
 
 	/**
@@ -336,8 +336,7 @@ public class JSONRPC2Session {
 		
 		if (cookieManager == null) {
 
-			List<HttpCookie> emptyList = Collections.emptyList();
-			return emptyList;
+			return Collections.emptyList();
 		}
 
 		return cookieManager.getCookieStore().getCookies();
@@ -348,11 +347,8 @@ public class JSONRPC2Session {
 	 * Applies the required headers to the specified URL connection.
 	 *
 	 * @param con The URL connection which must be open.
-	 *
-	 * @throws JSONRPC2SessionException If an exception is encountered.
 	 */
-	private void applyHeaders(final URLConnection con)
-		throws JSONRPC2SessionException {
+	private void applyHeaders(final URLConnection con) {
 
 		// Expect UTF-8 for JSON
 		con.setRequestProperty("Accept-Charset", "UTF-8");
@@ -401,7 +397,7 @@ public class JSONRPC2Session {
 		throws JSONRPC2SessionException {
 		
 		// Open HTTP connection
-		URLConnection con = null;
+		URLConnection con;
 
 		try {
 			// Use proxy?
@@ -475,7 +471,8 @@ public class JSONRPC2Session {
 	/**
 	 * Reads the raw response from an URL connection (after HTTP POST). 
 	 * Invokes the {@link RawResponseInspector} if configured and stores 
-	 * any cookies {@link JSONRPC2SessionOptions#storeCookies if required}.
+	 * any cookies {@link JSONRPC2SessionOptions#acceptCookies()} if
+	 * required}.
 	 *
 	 * @param con The URL connection. It should contain ready data for
 	 *            retrieval. Must not be {@code null}.
@@ -487,7 +484,7 @@ public class JSONRPC2Session {
 	private RawResponse readRawResponse(final URLConnection con)
 		throws JSONRPC2SessionException {
 	
-		RawResponse rawResponse = null;
+		RawResponse rawResponse;
 		
 		try {
 			rawResponse = RawResponse.parse((HttpURLConnection)con);
@@ -562,7 +559,7 @@ public class JSONRPC2Session {
 
 		if (! options.isAllowedResponseContentType(contentType)) {
 
-			String msg = null;
+			String msg;
 
 			if (contentType == null)
 				msg = "Missing Content-Type header in the HTTP response";
@@ -573,7 +570,7 @@ public class JSONRPC2Session {
 		}
 
 		// Parse and return the response
-		JSONRPC2Response response = null;
+		JSONRPC2Response response;
 
 		try {
 			response = JSONRPC2Response.parse(rawResponse.getContent(), 
@@ -632,9 +629,6 @@ public class JSONRPC2Session {
 
 		// Send notification encoded as JSON
 		postString(con, notification.toString());
-
-		// Get the response /for the inspector only/
-		RawResponse rawResponse = readRawResponse(con);
 	}
 }
 

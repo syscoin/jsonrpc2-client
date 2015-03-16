@@ -52,7 +52,7 @@ public class JSONRPC2SessionException extends Exception {
 	 * Indicates the type of cause for this exception, see
 	 * constants.
 	 */
-	private int causeType;
+	private final int causeType;
 	
 	
 	/**

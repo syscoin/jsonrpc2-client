@@ -196,7 +196,7 @@ public class RawResponse {
 
 		List <String> values = headers.get(name);
 
-		if (values == null | values.size() <= 0)
+		if (values == null || values.size() <= 0)
 			return null;
 
 		return values.get(0);
