@@ -1,6 +1,6 @@
 JSON-RPC 2.0 Client
 
-Copyright (c) Vladimir Dzhuvinov, 2010 - 2013
+Copyright (c) Vladimir Dzhuvinov, 2010 - 2015
 
 
 README
@@ -42,19 +42,14 @@ Requirements:
 
 	* Java 1.5 or later
 	
-	* The JSON-RPC 2.0 Base package com.thetransactioncompany.jsonrpc2 to 
-	  represent, serialise and parse JSON-RPC 2.0 messages. Available from
-	  http://software.dzhuvinov.com/json-rpc-2.0-base.html
+	* The package depends on the JSON-RPC 2.0 Base library and the JSON Smart
+	  library for JSON encoding and decoding (fork of the popular JSON.simple
+	  toolkit, but with more efficient parsing).
 
 
-For complete JSON-RPC 2.0 Client documentation, examples and updates visit
-	
+Visit the library home page for usage, examples and updates:
+
 	http://software.dzhuvinov.com/json-rpc-2.0-client.html
-
-
-The JSON-RPC 2.0 specification and user group forum can be found at
-
-	http://groups.google.com/group/json-rpc
 
 
 [EOF]
