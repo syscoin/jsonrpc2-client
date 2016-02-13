@@ -107,6 +107,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
  * </pre>
  *
  * @author Vladimir Dzhuvinov
+ * @author Mike Outland
  */
 public class JSONRPC2Session {
 
@@ -425,8 +426,10 @@ public class JSONRPC2Session {
 		// Set trust all certs SSL factory?
 		if (con instanceof HttpsURLConnection && options.trustsAllCerts()) {
 		
-			if (trustAllSocketFactory == null)
+			if (trustAllSocketFactory == null) {
+				// TODO
 				throw new JSONRPC2SessionException("Couldn't obtain trust-all SSL socket factory");
+			}
 		
 			((HttpsURLConnection)con).setSSLSocketFactory(trustAllSocketFactory);
 		}
@@ -529,6 +532,28 @@ public class JSONRPC2Session {
 	}
 
 
+	/**
+	 * Closes the specified URL connection by closing the underlying I/O
+	 * streams. Java may cache the TCP socket for later reuse, see
+	 * http://stackoverflow.com/a/11533423/429425
+	 *
+	 * @param con The URL connection to close. May be {@code null}.
+	 */
+	private static void closeURLConnection(final URLConnection con) {
+
+		if (con == null) {
+			return;
+		}
+
+		try {
+			con.getInputStream().close();
+			con.getOutputStream().close();
+		} catch (Exception e) {
+			// ignore
+		}
+	}
+
+
 	/** 
 	 * Sends a JSON-RPC 2.0 request using HTTP POST and returns the server
 	 * response.
@@ -548,11 +573,18 @@ public class JSONRPC2Session {
 		// Create and configure URL connection to server endpoint
 		URLConnection con = createURLConnection();
 
-		// Send request encoded as JSON
-		postString(con, request.toString());
+		final RawResponse rawResponse;
 
-		// Get the response
-		RawResponse rawResponse = readRawResponse(con);
+		try {
+			// Send request encoded as JSON
+			postString(con, request.toString());
+
+			// Get the response
+			rawResponse = readRawResponse(con);
+
+		} finally {
+			closeURLConnection(con);
+		}
 
 		// Check response content type
 		String contentType = rawResponse.getContentType();
@@ -628,7 +660,13 @@ public class JSONRPC2Session {
 		URLConnection con = createURLConnection();
 
 		// Send notification encoded as JSON
-		postString(con, notification.toString());
+		try {
+			postString(con, notification.toString());
+
+		} finally {
+
+			closeURLConnection(con);
+		}
 	}
 }
 
