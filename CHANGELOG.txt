@@ -1,6 +1,6 @@
 CHANGE LOG
 
-JsonRpc2-Client, Copyright (c) Vladimir Dzhuvinov, 2010 - 2015
+JsonRpc2-Client, Copyright (c) Vladimir Dzhuvinov, 2010 - 2016
 
 
 version 1.0 (2010-11-09)
@@ -97,3 +97,7 @@ version 1.15 (2015-03-16)
     * Cleans up code.
     * Upgrades to JSON-RPC 2.0 Base 1.36.
     * Upgrades to JSON Smart 1.3.1.
+
+version 1.16 (2016-02-13)
+    * Closes the URL connection I/O streams after use.
+

@@ -1,6 +1,6 @@
 JSON-RPC 2.0 Client
 
-Copyright (c) Vladimir Dzhuvinov, 2010 - 2015
+Copyright (c) Vladimir Dzhuvinov, 2010 - 2016
 
 
 README
