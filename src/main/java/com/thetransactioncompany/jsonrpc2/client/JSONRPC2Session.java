@@ -427,7 +427,7 @@ public class JSONRPC2Session {
 		if (con instanceof HttpsURLConnection && options.trustsAllCerts()) {
 		
 			if (trustAllSocketFactory == null) {
-				// TODO
+				closeURLConnection(con);
 				throw new JSONRPC2SessionException("Couldn't obtain trust-all SSL socket factory");
 			}
 		
