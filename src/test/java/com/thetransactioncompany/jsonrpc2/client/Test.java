@@ -1,11 +1,15 @@
 package com.thetransactioncompany.jsonrpc2.client;
 
 
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 
-import com.thetransactioncompany.jsonrpc2.*;
-
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Notification;
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import junit.framework.TestCase;
+import net.minidev.json.JSONObject;
 
 
 /**
@@ -477,5 +481,44 @@ public class Test extends TestCase {
 
 			System.out.println(e.getMessage());
 		}
+	}
+
+
+	public void _testCyrillic()
+		throws Exception {
+
+		JSONRPC2Session session = new JSONRPC2Session(new URL("http://localhost:8080/json2ldap/"));
+		session.getOptions().setRequestContentType("application/json;charset=utf8");
+
+		JSONObject params = new JSONObject();
+		params.put("host", "localhost");
+		params.put("port", 1389);
+		JSONRPC2Response response = session.send(new JSONRPC2Request("ldap.connect", params, "1"));
+
+		System.out.println(response);
+
+		String cid = (String)((JSONObject)response.getResult()).get("CID");
+
+		System.out.println("CID: " + cid);
+
+		params = new JSONObject();
+		params.put("CID", cid);
+		params.put("DN", "cn=Directory Manager");
+		params.put("password", "secret");
+
+		System.out.println(session.send(new JSONRPC2Request("ldap.simpleBind", params, "3")));
+
+		params = new JSONObject();
+		params.put("CID", cid);
+		params.put("baseDN", "ou=people,dc=wonderland,dc=net");
+		params.put("filter", "(givenName=Алиса)");
+		params.put("scope", "ONE");
+		params.put("attributes", Arrays.asList("givenName", "uid"));
+
+		System.out.println(session.send(new JSONRPC2Request("ldap.search", params, "4")));
+
+		params = new JSONObject();
+		params.put("CID", cid);
+		session.send(new JSONRPC2Request("ldap.close", params, "2"));
 	}
 }
