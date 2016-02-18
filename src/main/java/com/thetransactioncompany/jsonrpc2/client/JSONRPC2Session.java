@@ -426,7 +426,7 @@ public class JSONRPC2Session {
 		if (con instanceof HttpsURLConnection && options.trustsAllCerts()) {
 		
 			if (trustAllSocketFactory == null) {
-				closeURLConnection(con);
+				closeStreams(con);
 				throw new JSONRPC2SessionException("Couldn't obtain trust-all SSL socket factory");
 			}
 		
@@ -532,13 +532,14 @@ public class JSONRPC2Session {
 
 
 	/**
-	 * Closes the specified URL connection by closing the underlying I/O
-	 * streams. Java may cache the TCP socket for later reuse, see
-	 * http://stackoverflow.com/a/11533423/429425
+	 * Closes the input, output and error streams of the specified URL
+	 * connection. No attempt is made to close the underlying socket with
+	 * {@code conn.disconnect} so it may be cached (HTTP 1.1 keep live).
+	 * See http://techblog.bozho.net/caveats-of-httpurlconnection/
 	 *
-	 * @param con The URL connection to close. May be {@code null}.
+	 * @param con The URL connection. May be {@code null}.
 	 */
-	private static void closeURLConnection(final URLConnection con) {
+	private static void closeStreams(final URLConnection con) {
 
 		if (con == null) {
 			return;
@@ -548,17 +549,24 @@ public class JSONRPC2Session {
 			if (con.getInputStream() != null) {
 				con.getInputStream().close();
 			}
+		} catch (Exception e) {
+			// ignore
+		}
 
+		try {
 			if (con.getOutputStream() != null) {
 				con.getOutputStream().close();
 			}
+		} catch (Exception e) {
+			// ignore
+		}
 
+		try {
 			HttpURLConnection httpCon = (HttpURLConnection)con;
 
 			if (httpCon.getErrorStream() != null) {
 				httpCon.getErrorStream().close();
 			}
-
 		} catch (Exception e) {
 			// ignore
 		}
@@ -594,7 +602,7 @@ public class JSONRPC2Session {
 			rawResponse = readRawResponse(con);
 
 		} finally {
-			closeURLConnection(con);
+			closeStreams(con);
 		}
 
 		// Check response content type
@@ -676,7 +684,7 @@ public class JSONRPC2Session {
 
 		} finally {
 
-			closeURLConnection(con);
+			closeStreams(con);
 		}
 	}
 }
