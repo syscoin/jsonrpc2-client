@@ -108,4 +108,10 @@ version 1.16.1 (2016-02-13)
 version 1.16.2 (2016-02-18)
     * Closes the error stream of the HTTP(S) URL connection after use.
 
+version 1.16.3 (2016-02-18)
+    * Performs a null check before closing the input, output and error streams
+      of the HTTP(S) URL connection after use.
+
+
+
 

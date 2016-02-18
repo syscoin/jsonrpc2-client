@@ -13,7 +13,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import java.security.SecureRandom;
-
 import java.security.cert.X509Certificate;
 
 import java.util.Collections;
@@ -546,9 +545,20 @@ public class JSONRPC2Session {
 		}
 
 		try {
-			con.getInputStream().close();
-			con.getOutputStream().close();
-			((HttpURLConnection) con).getErrorStream().close();
+			if (con.getInputStream() != null) {
+				con.getInputStream().close();
+			}
+
+			if (con.getOutputStream() != null) {
+				con.getOutputStream().close();
+			}
+
+			HttpURLConnection httpCon = (HttpURLConnection)con;
+
+			if (httpCon.getErrorStream() != null) {
+				httpCon.getErrorStream().close();
+			}
+
 		} catch (Exception e) {
 			// ignore
 		}
