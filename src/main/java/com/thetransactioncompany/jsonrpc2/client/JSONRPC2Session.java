@@ -548,6 +548,7 @@ public class JSONRPC2Session {
 		try {
 			con.getInputStream().close();
 			con.getOutputStream().close();
+			((HttpURLConnection) con).getErrorStream().close();
 		} catch (Exception e) {
 			// ignore
 		}

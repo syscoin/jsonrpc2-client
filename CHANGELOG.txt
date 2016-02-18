@@ -105,3 +105,7 @@ version 1.16.1 (2016-02-13)
     * Closes the URL connection I/O streams explicitly upon encountering a
       missing trust-all socket factory for HTTPS connections.
 
+version 1.16.2 (2016-02-18)
+    * Closes the error stream of the HTTP(S) URL connection after use.
+
+
