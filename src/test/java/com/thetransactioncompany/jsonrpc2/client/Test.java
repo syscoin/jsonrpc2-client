@@ -35,7 +35,7 @@ public class Test extends TestCase {
 	}
 
 
-	public void testRequest() {
+	/*public void testRequest() {
 
 		// Assumes a Json2Ldap service
 
@@ -63,7 +63,7 @@ public class Test extends TestCase {
 		}
 
 		System.out.println("Response: " + response);
-	}
+	}*/
 
 
 	// Disable temporarily
@@ -308,7 +308,7 @@ public class Test extends TestCase {
 		System.out.println("Response: " + response);
 	}
 
-
+/*
 	public void testRequestIDMatchingBoolean() {
 
 		// Assumes a Json2Ldap service
@@ -435,7 +435,7 @@ public class Test extends TestCase {
 
 		System.out.println("Response: " + response);
 	}
-
+*/
 	public void testRequestContentType() {
 
 		URL url = null;
